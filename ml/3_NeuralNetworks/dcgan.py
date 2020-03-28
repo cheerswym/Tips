@@ -19,10 +19,11 @@ from __future__ import division, print_function, absolute_import
 
 import matplotlib.pyplot as plt
 import numpy as np
-import tensorflow as tf
-
+import tensorflow.compat.v1 as tf
+tf.disable_v2_behavior()
 # Import MNIST data
-from tensorflow.examples.tutorials.mnist import input_data
+# from tensorflow.examples.tutorials.mnist 
+import input_data
 mnist = input_data.read_data_sets("/tmp/data/", one_hot=True)
 
 # Training Params
@@ -164,4 +165,5 @@ with tf.Session() as sess:
 
     f.show()
     plt.draw()
+    plt.savefig("dcgan.png")
     plt.waitforbuttonpress()
