@@ -102,7 +102,7 @@ def test_mnist():
     """
     # %%
     import tensorflow as tf
-    import tensorflow.examples.tutorials.mnist.input_data as input_data
+    import input_data
     import matplotlib.pyplot as plt
 
     # %%
