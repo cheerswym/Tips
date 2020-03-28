@@ -4,7 +4,7 @@
 # In[ ]:
 
 
-get_ipython().system('pip install gnn')
+#get_ipython().system('pip install gnn')
 
 
 # In[ ]:
