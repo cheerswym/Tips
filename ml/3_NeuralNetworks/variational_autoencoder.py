@@ -142,4 +142,5 @@ with tf.Session() as sess:
     plt.figure(figsize=(8, 10))
     Xi, Yi = np.meshgrid(x_axis, y_axis)
     plt.imshow(canvas, origin="upper", cmap="gray")
+    plt.savefig("Variational.png") 
     plt.show()
