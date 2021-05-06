@@ -2,7 +2,7 @@
 #include <iostream>
 #include <string>
 #include <unordered_map>
-
+#include <unordered_set>
 
 class Node {
 	public:
@@ -35,5 +35,17 @@ std::cout << a << "\n";
 int i=10; 
 while(i-- > 0);
 std::cout << "i=" << i << "\n";
+
+
+std::unordered_set<int> decisions;
+decisions.insert(1);
+decisions.insert(2);
+decisions.insert(3);
+decisions.insert(6);
+for (auto it = decisions.begin(); it != decisions.end(); it++) {
+//std::cout << "distance: " <<std::distance(decisions.begin(), it)   << "\n";
+std::cout << *it << "\n";
+}
+
   return 0;
 }

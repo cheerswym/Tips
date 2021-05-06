@@ -42,7 +42,6 @@ std::cout << ret << std::endl;
  std::map<int,int> mymap;
  
   mymap[1]=202;
-  if(mymap.count(1)==0)
   mymap[1]=101;
   mymap[3]=302;
   
