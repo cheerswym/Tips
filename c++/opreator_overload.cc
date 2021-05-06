@@ -41,10 +41,14 @@ int main() {
   delete t;
   t = nullptr;
   delete t;
+//getchar();
+std::cin.get();
 
 	Vector2 v1,v2;
 	v1.x = 10;
 	v1.y = 39;
 	std::cout<<v1<<std::endl;
 	std::cout<<v2<<std::endl;
+
+
 }
