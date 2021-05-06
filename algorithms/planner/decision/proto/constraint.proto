@@ -1,0 +1,183 @@
+syntax = "proto2";
+
+package qcraft.planner;
+option go_package = "qcraft-proto.ai/onboard/planner/decision/proto/constraint";
+
+import "onboard/math/geometry/proto/halfplane.proto";
+import "onboard/math/geometry/proto/affine_transformation.proto";
+import "onboard/planner/decision/proto/stop_sign_state.proto";
+import "onboard/planner/decision/proto/crosswalk_state.proto";
+import "common/proto/map_geometry.proto";
+
+message SourceProto {
+  message TrafficLight {
+    optional int64 id = 1;
+  }
+  message Crosswalk {
+    optional int64 id = 1;
+  }
+  message NoBlock {
+    optional int64 id = 1;
+  }
+  message SpeedBump {
+    optional int64 id = 1;
+  }
+  message EndOfPathBoundary {
+    optional int64 id = 1;
+  }
+  message Intersection {
+    optional int64 id = 1;
+  }
+  message CloseObject {
+    optional string id = 1;
+  }
+  message EndOfCurrentLanePath {
+    optional int64 id = 1;
+  }
+  message LcEndOfCurrentLane {
+    optional string id = 1;
+  }
+  message ParkingBrakeRelease {
+    optional int64 id = 1;
+  }
+  message BlockingStaticObject {
+    optional string id = 1;
+  }
+  message Pedestrian {
+    optional string id = 1;
+  }
+  message Toll {
+    optional int64 id = 1;
+  }
+  message StopSign {
+    optional sfixed64 lane_id = 1;
+  }
+  // Note: Standby just used for visualization currently, if used as
+  // decision in the future, delete this comment.
+  message Standby {
+    optional string reason = 1;
+  }
+  message Standstill {
+    optional string reason = 1;
+  }
+  message PullOver {
+    optional string reason = 1;
+  }
+  message BrakeToStop {
+    optional string reason = 1;
+  }
+  // Freespace planner constraint.
+  message EndOfLocalPath {
+    optional string reason = 1;
+  }
+  message BeyondLengthAlongRoute {
+    optional string id = 1;
+  }
+  oneof type {
+    TrafficLight traffic_light = 1;
+    Crosswalk crosswalk = 2;
+    NoBlock no_block = 3;
+    SpeedBump speed_bump = 4;
+    EndOfPathBoundary end_of_path_boundary = 5;
+    Intersection intersection = 6;
+    CloseObject close_object = 7;
+    EndOfCurrentLanePath end_of_current_lane_path = 8;
+    LcEndOfCurrentLane lc_end_of_current_lane = 9;
+    ParkingBrakeRelease parking_brake_release = 10;
+    BlockingStaticObject blocking_static_object = 11;
+    Pedestrian pedestrian_object = 12;
+    Standby standby = 13;
+    Toll toll = 14;
+    StopSign stop_sign = 15;
+    Standstill standstill = 16;
+    PullOver pull_over = 17;
+    BrakeToStop brake_to_stop = 20;
+    EndOfLocalPath end_of_local_path = 18;
+    BeyondLengthAlongRoute beyond_length_along_route = 19;
+  };
+}
+
+message ConstraintProto {
+  message AvoidRegionProto {
+    optional mapping.GeoPolygonProto contour = 1;
+    optional double buffer = 2;
+    optional SourceProto source = 3;
+    optional string id = 4;
+  }
+
+  message StopLineProto {
+    optional HalfPlaneProto half_plane = 1;
+    // Accumulated s on drive passage.
+    optional double s = 2;
+    // Expect AV to keep a distance from stop line.
+    optional double standoff = 3;
+    // Time remaining to active stop line.
+    optional double time = 4;
+    // Id of constraint.
+    optional string id = 5;
+    // Constraint source.
+    optional SourceProto source = 6;
+  }
+
+  message SpeedRegionProto {
+    optional Vec2dProto start_point = 1;
+    optional Vec2dProto end_point = 2;
+    optional double start_s = 3;
+    optional double end_s = 4;
+    optional double max_speed = 5;
+    optional double min_speed = 6;
+    optional string id = 7;
+    optional SourceProto source = 8;
+  }
+
+  message TimeRegionProto {
+    optional mapping.GeoPolygonProto region = 1;
+    optional double max_time = 2;
+    optional double min_time = 3;
+    optional string id = 4;
+    optional SourceProto source = 5;
+  }
+
+  message LeadingObjectProto {
+    enum Reason {
+      FORBIDDEN_TO_NUDGE = 1;
+      LANE_CHANGE_TARGET = 2;
+      BLOCKING_STATIC = 3;
+    }
+    optional string traj_id = 1;
+    optional Reason reason = 2;
+    message STConstraint {
+      optional double t = 1;
+      optional double s = 2;
+    }
+    repeated STConstraint st_constraints = 3;
+  }
+
+  message IgnoreObjectProto {
+    enum Reason {
+      CANNOT_STOP_BEFORE_FOD = 1;
+      CANNOT_STOP_BEFORE_VEGETATION = 2;
+      OVERLAP_WITH_REAR_IGNORABLE_ZONE = 3;
+    }
+    optional string traj_id = 1;
+    optional Reason reason = 2;
+  }
+
+  repeated StopLineProto stop_line = 1;
+  repeated SpeedRegionProto speed_region = 2;
+  repeated LeadingObjectProto leading_object = 3;
+  repeated IgnoreObjectProto ignore_object = 4;
+}
+
+message TrafficLightDeciderStateProto {
+  optional bool last_tl_proceed = 1;
+  optional bool entry_with_left_light_not_red = 2;
+  optional bool has_received_known_traffic_light = 3;
+  optional sfixed64 last_tl_decision_lane_id = 4 [default = -1];
+}
+
+message DeciderStateProto {
+  optional TrafficLightDeciderStateProto traffic_light_decider_state = 1;
+  repeated qcraft.planner.StopSignStateProto stop_sign_state = 2;
+  repeated qcraft.planner.CrosswalkStateProto crosswalk_state = 3;
+}

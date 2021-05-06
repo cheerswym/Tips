@@ -1,0 +1,56 @@
+# Params applicable to intelligent buses in China urban environments.
+motion_constraint_params {
+  default_speed_limit: 30  # 30mph, 48kph
+}
+
+lc_decision_params { min_lane_change_length: 14.0 }
+
+turn_speed_limiting_params { bias: 1.3 gain: 0.08 }
+
+decision_constraint_config {
+  enable_traffic_light: true
+  enable_crosswalk: true
+  enable_leading_object: true
+  enable_ignore_object: false
+  enable_no_block: true
+  enable_speed_bump: true
+}
+
+speed_finder_params {
+  speed_optimizer_params {
+    s_kernel_weight: 0.0001
+    speed_kernel_weight: 0.45
+    accel_kernel_weight: 12.0
+    jerk_kernel_weight: 20.0
+    force_stop_speed_threshold: 0.2
+  }
+  speed_limit_params { curvature_bias: 2.0 curvature_gain: 0.08 }
+  follow_standstill_distance_for_static_obj: 7.0
+}
+
+initializer_params { cost_config { stop_constraint { stop_constraint: 1.0 } } }
+
+trajectory_optimizer_params {
+  cost_weight_params {
+    longitudinal_acceleration_cost_params {
+      accel_cascade { buffer: 0.0 gain: 20.0 }
+      accel_cascade { buffer: 2.0 gain: 100.0 }
+    }
+    lateral_acceleration_cost_weight: 1.0
+    vehicle_model_params { mid_edge_to_center: 4.0 }
+  }
+}
+
+fallback_planner_params {
+  speed_finder_params {
+    speed_optimizer_params {
+      s_kernel_weight: 0.0001
+      speed_kernel_weight: 0.45
+      accel_kernel_weight: 12.0
+      jerk_kernel_weight: 20.0
+      force_stop_speed_threshold: 0.2
+    }
+    speed_limit_params { curvature_bias: 2.0 curvature_gain: 0.08 }
+    follow_standstill_distance_for_static_obj: 7.0
+  }
+}

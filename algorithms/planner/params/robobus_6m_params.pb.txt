@@ -1,0 +1,89 @@
+# Params applicable to robobuses in China urban environments.
+motion_constraint_params {
+  default_speed_limit: 25  # 25mph, 40kph
+}
+
+lc_decision_params { min_lane_change_length: 14.0 }
+
+turn_speed_limiting_params { bias: 2.5 gain: 0.16 }
+
+decision_constraint_config {
+  enable_traffic_light: true
+  enable_crosswalk: true
+  enable_leading_object: true
+  enable_ignore_object: false
+  enable_no_block: true
+  enable_speed_bump: true
+}
+
+speed_finder_params {
+  speed_optimizer_params {
+    s_kernel_weight: 0.0001
+    speed_kernel_weight: 0.45
+    accel_kernel_weight: 12.0
+    jerk_kernel_weight: 20.0
+    force_stop_speed_threshold: 0.2
+  }
+  speed_limit_params { curvature_bias: 2.5 curvature_gain: 0.1 }
+  follow_standstill_distance_for_static_obj: 7.0
+}
+
+initializer_params { cost_config { stop_constraint { stop_constraint: 1.0 } } }
+
+trajectory_optimizer_params {
+  cost_weight_params {
+    longitudinal_acceleration_cost_params {
+      accel_cascade { buffer: 0.0 gain: 20.0 }
+      accel_cascade { buffer: 2.0 gain: 100.0 }
+    }
+    lateral_acceleration_cost_weight: 0.5
+    vehicle_model_params { mid_edge_to_center: 3.0 }
+  }
+}
+
+fallback_planner_params {
+  speed_finder_params {
+    speed_optimizer_params {
+      s_kernel_weight: 0.0001
+      speed_kernel_weight: 0.45
+      accel_kernel_weight: 12.0
+      jerk_kernel_weight: 20.0
+      force_stop_speed_threshold: 0.2
+    }
+    speed_limit_params { curvature_bias: 2.5 curvature_gain: 0.1 }
+    follow_standstill_distance_for_static_obj: 7.0
+  }
+}
+
+trajectory_optimizer_vehicle_model_params {
+  circle {
+    dist_to_rac: 0.0
+    angle_to_axis: 0.0
+    radius: 1.01
+    name: "Rear axis center"
+  }
+  circle {
+    dist_to_rac: 4.085
+    angle_to_axis: 0.0
+    radius: 1.01
+    name: "Front axis center"
+  }
+  circle {
+    dist_to_rac: 4.84728
+    angle_to_axis: 0.147
+    radius: 0.3
+    name: "Front left corner"
+  }
+  circle {
+    dist_to_rac: 4.84728
+    angle_to_axis: -0.147
+    radius: 0.3
+    name: "Front right corner"
+  }
+  circle {
+    dist_to_rac: 2.0425
+    angle_to_axis: 0.0
+    radius: 1.01
+    name: "Middle axis center"
+  }
+}

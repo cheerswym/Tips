@@ -1,0 +1,18 @@
+syntax = "proto2";
+
+package qcraft.planner;
+option go_package = "qcraft-proto.ai/onboard/planner/proto/fallback_planner_debug";
+
+import "onboard/planner/proto/trajectory_validation.proto";
+import "onboard/planner/speed/proto/speed_finder.proto";
+import "onboard/planner/scheduler/proto/scheduler.proto";
+import "onboard/planner/decision/proto/constraint.proto";
+
+message FallbackPlannerDebugProto {
+  optional SchedulerOutputProto scheduler = 5;
+  optional ConstraintProto constraint = 2;
+  optional SpeedFinderDebugProto speed_finder = 3;
+  optional TrajectoryValidationResultProto traj_validation = 4;
+
+  reserved 1;
+}

@@ -1,0 +1,205 @@
+syntax = "proto2";
+
+package qcraft.planner;
+option go_package = "qcraft-proto.ai/onboard/planner/initializer/proto/initializer_config";
+
+import "onboard/planner/initializer/proto/initializer.proto";
+
+message InitializerConfig {
+  enum SearchAlgorithm {
+    DP = 2;
+    reserved 1;
+  }
+  optional SearchAlgorithm search_algorithm = 1;
+
+  message FeatureCostConfig {
+    message AccelerationFeature {
+      // Add weight and only weight here.
+      optional double accel = 1;
+      optional double jerk = 2;
+    }
+
+    message LaneBoundaryFeature {
+      // weight
+      optional double pass_dashed_white_line = 1;
+      optional double pass_solid_white_line = 2;
+      optional double pass_dashed_yellow_line = 3;
+      optional double pass_solid_yellow_line = 4;
+      optional double near_curb = 5;
+      optional double center_offset = 6;
+      optional double pass_solid_double_yellow_line = 7;
+    }
+
+    message RefSpeedFeature {
+      // weight
+      optional double exceeds_speed_limit = 1;
+      optional double exceeds_ref_speed = 2;
+      optional double below_ref_speed = 3;
+    }
+
+    message CurvatureFeature {
+      // weight
+      optional double curvature = 1;
+    }
+
+    message CollisionFeature {
+      optional double collision = 1;
+    }
+
+    message StopConstraintFeature {
+      // weight
+      optional double stop_constraint = 1;
+    }
+
+    message LeadingObjectFeature {
+      optional double leading_object_constraint = 1;
+    }
+
+    // This is a cost corresponding to ProgressCostFeature to guarantee
+    // heuristic admissibility
+    message ProgressSpentCostFeature {
+      optional double station_travel = 1;
+      optional double time_consume = 2;
+    }
+
+    optional AccelerationFeature acceleration = 1;
+    optional LaneBoundaryFeature lane_boundary = 2;
+    optional RefSpeedFeature ref_speed = 3;
+    optional CurvatureFeature curvature = 4;
+    optional CollisionFeature collision = 5;
+    optional StopConstraintFeature stop_constraint = 6;
+    optional LeadingObjectFeature leading_object = 9;
+    optional ProgressSpentCostFeature progress_spent = 10;
+    // Cost to goal
+    message ProgressCostFeature {
+      optional double station_progress = 1;
+      optional double eta = 2;
+      optional double time_progress = 3;
+    }
+
+    message CollisionHeuristicFeature {
+      optional double stopline_ttc = 1;
+    }
+
+    optional ProgressCostFeature progress = 7;
+    // Next Id: 11
+  }
+
+  message DpFeatureCostConfig {
+    message DpAccelerationFeature {
+      // Weight.
+      optional double accel = 1;
+    }
+
+    message DpLaneBoundaryFeature {
+      // Weight.
+      optional double lane_bound = 1;
+      optional double lane_center = 2;
+    }
+    message DpCurvatureFeautre {
+      // Weight.
+      optional double curvature = 1;
+    }
+    message DpLateralAcclerationFeature {
+      // Weight.
+      optional double acc_hard = 1;
+      optional double acc_soft = 2;
+      optional double jerk = 3;
+    }
+
+    message DpStopConstraintFeature {
+      // Weight.
+      optional double stop_constraint = 1;
+    }
+
+    message DpRefSpeedFeature {
+      // Weight.
+      optional double exceeds_speed_limit = 1;
+      optional double exceeds_ref_speed = 2;
+      optional double below_ref_speed = 3;
+    }
+
+    message DpDynamicCollisionFeature {
+      // Weight.
+      optional double collision_cost = 1;
+    }
+
+    message DpLeadingObjectFeature {
+      // Weight.
+      optional double leading_object = 1;
+    }
+
+    message DpFinalProgressFeature {
+      // Weight.
+      optional double longitudinal = 1;
+      optional double lateral = 2;
+    }
+
+    optional DpAccelerationFeature dp_acceleration = 1;
+    optional DpLaneBoundaryFeature dp_lane_boundary = 2;
+    optional DpLateralAcclerationFeature dp_lateral_acceleration = 3;
+    optional DpStopConstraintFeature dp_stop_constraint = 4;
+    optional DpRefSpeedFeature dp_ref_speed = 5;
+    optional DpDynamicCollisionFeature dp_dynamic_collision = 6;
+    optional DpCurvatureFeautre dp_curvature = 7;
+    reserved 8, 9;
+    optional DpLeadingObjectFeature dp_leading_object = 10;
+    optional DpFinalProgressFeature dp_final_progress = 11;
+  }
+
+  message RefLineFeatureCostConfig {
+    message RefLineStationaryObjectFeature {
+      // Weight.
+      optional double distance = 1;
+    }
+
+    message RefLineProgressFeature {
+      // Weight.
+      optional double longitudinal = 1;
+      optional double lateral = 2;
+    }
+
+    message RefLinePathBoundaryFeature {
+      // Weight.
+      optional double center = 1;
+      optional double target_boundary = 2;
+      optional double boundary = 3;
+    }
+
+    message RefLineCurvatureFeature {
+      // Weight.
+      optional double absolute = 1;
+    }
+    optional RefLineStationaryObjectFeature ref_line_stationary_object = 1;
+    optional RefLineProgressFeature ref_line_progress = 2;
+    optional RefLinePathBoundaryFeature ref_line_path_boundary = 3;
+    optional RefLineCurvatureFeature ref_line_curvature = 4;
+  }
+
+  message InitializerSamplePattern {
+    enum Scenario {
+      SCENARIO_NONE = 0;
+      SCENARIO_LANE_KEEPING = 1;  // Lane keeping.
+      SCENARIO_LANE_CHANGE = 2;   // Lane change.
+      SCENARIO_LANE_BORROW = 3;   // Lane borrow.
+    }
+    message SampleConfig {
+      repeated double range = 1;
+      repeated int64 layer_station = 2;
+      repeated double lateral_resolution = 3;
+      repeated int64 cross_layer_connection = 4;
+      repeated double unit_length_lateral_span = 5;
+    }
+
+    optional InitializerSamplePatternConfig config_name = 1;
+    optional Scenario scenario = 2;
+    optional SampleConfig config = 3;
+  }
+
+  optional FeatureCostConfig cost_config = 2;
+  optional DpFeatureCostConfig dp_cost_config = 3;
+  repeated InitializerSamplePattern sample_patterns = 4;
+  optional RefLineFeatureCostConfig ref_line_cost_config = 5;
+  reserved 8;
+  optional DpFeatureCostConfig dp_post_cost_config = 10;
+}

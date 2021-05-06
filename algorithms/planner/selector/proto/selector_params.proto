@@ -1,0 +1,71 @@
+syntax = "proto2";
+
+package qcraft.planner;
+option go_package = "qcraft-proto.ai/onboard/planner/selector/proto/selector_params";
+
+message SelectorParamsProto {
+  message TrajCostWeights {
+    // Weights for different cost features.
+    message ProgressCost {
+      optional double progress = 1;
+      optional double follow_slow = 2;
+    }
+    message MaxJerkCost {
+      optional double max_lon_jerk = 1;
+      optional double max_lat_jerk = 2;
+    }
+    message LaneChangeCost {
+      optional double lane_path_diff = 1;
+      optional double pose_to_target = 2;
+      optional double prev_lat_diff = 3;
+      optional double lc_in_intersection = 4;
+    }
+    message CrossSolidBoundaryCost {
+      optional double solid_white = 1;
+      optional double solid_yellow = 2;
+      optional double solid_double_yellow = 3;
+      optional double curb = 4;
+    }
+    message MinDistToObjectsCost {
+      optional double dist_to_objects = 1;
+    }
+    message RouteLookAheadCost {
+      optional double length_along_route = 1;
+      optional double reach_destination = 2;
+      optional double preview_beyond_horizon = 3;
+    }
+    message BoundaryExpansionCost {
+      optional double boundary_expansion = 1;
+    }
+    message ProhibitedRegionCost {
+      optional double behind_stalled_object = 1;
+    }
+    message IsFallbackCost {
+      optional double is_fallback = 1;
+    }
+
+    optional ProgressCost progress = 1;
+    optional MaxJerkCost max_jerk = 2;
+    optional LaneChangeCost lane_change = 3;
+    optional CrossSolidBoundaryCost cross_solid_boundary = 4;
+    optional MinDistToObjectsCost dist_to_objects = 5;
+    optional RouteLookAheadCost route_look_ahead = 6;
+    optional BoundaryExpansionCost boundary_expansion = 7;
+    optional ProhibitedRegionCost prohibited_region = 8;
+    optional IsFallbackCost is_fallback = 9;
+  }
+  message TrajCostConfig {
+    optional bool enable_progress_cost = 1;
+    optional bool enable_max_jerk_cost = 2;
+    optional bool enable_lane_change_cost = 3;
+    optional bool enable_solid_boundary_cost = 4;
+    optional bool enable_dist_to_objects_cost = 5;
+    optional bool enable_route_look_ahead_cost = 6;
+    optional bool enable_boundary_expansion_cost = 7;
+    optional bool enable_prohibited_region_cost = 8;
+    optional bool enable_is_fallback_cost = 9;
+  }
+
+  optional TrajCostWeights cost_weights = 1;
+  optional TrajCostConfig cost_config = 2;
+}

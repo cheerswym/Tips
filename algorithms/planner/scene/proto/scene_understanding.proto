@@ -1,0 +1,43 @@
+syntax = "proto2";
+
+package qcraft.planner;
+option go_package = "qcraft-proto.ai/onboard/planner/scene/proto/scene_understanding";
+
+import "onboard/maps/proto/lane_path.proto";
+import "onboard/proto/perception.proto";
+import "onboard/proto/prediction.proto";
+
+message TrafficWaitingQueueProto {
+  optional mapping.LanePathProto lane_path = 1;
+  repeated string object_id = 2;  // sort by longitudinal position
+};
+
+message ObjectAnnotationProto {
+  optional double stalled_vehicle_likelyhood = 1;  // [0, 1]
+  optional double depart_soon_likelyhood = 2;      // [0, 1]
+  // NOTE: stalled_vehicle_likelyhood + depart_soon_likelyhood <= 1.0
+  // objects in traffic waiting queue are more likely to be departing soon.
+
+  // Do not overtake the vehicle which is starting.
+  optional double vehicle_starting_likelyhood = 3;
+  optional string object_id = 4;
+
+  // TODO: add false detected annotation due to occlusion.
+};
+
+message InferredObjectProto {
+  enum InferType {
+    OCCLUDED = 0;
+    CONSTRUCTION_ZONE = 1;
+  };
+  optional ObjectProto object_info = 1;
+  optional ObjectPredictionProto prediction = 2;
+  optional InferType infer_type = 3;
+};
+
+// On road scene understanding output.
+message SceneOutputProto {
+  repeated TrafficWaitingQueueProto traffic_waiting_queue = 1;
+  repeated ObjectAnnotationProto objects_annotation = 2;
+  repeated InferredObjectProto inferred_objects = 3;
+}

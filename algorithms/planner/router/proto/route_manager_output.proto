@@ -1,0 +1,25 @@
+syntax = "proto2";
+package qcraft.planner;
+option go_package = "qcraft-proto.ai/onboard/planner/router/proto/route_manager_output";
+
+import "onboard/lite/proto/lite_common.proto";
+import "onboard/proto/turn_signal.proto";
+import "onboard/proto/route.proto";
+import "onboard/proto/hmi_content.proto";
+import "common/proto/drive_mission.proto";
+
+message RouteManagerOutputProto {
+  optional LiteHeader header = 1;
+
+  optional RouteProto route = 2;
+  optional RouteProto route_from_current = 3;
+  optional RouteContentProto route_content = 4;
+
+  optional TurnSignal signal = 7;
+  optional bool rerouted = 8;
+  optional bool is_bus = 9 [deprecated = true];
+
+  optional MultipleStopsRequestProto.StopProto destination_stop = 10;
+
+  optional int64 update_id = 11;
+}

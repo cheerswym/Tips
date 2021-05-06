@@ -1,0 +1,32 @@
+syntax = "proto2";
+
+package qcraft.planner;
+option go_package = "qcraft-proto.ai/onboard/planner/proto/est_planner_debug";
+
+import "onboard/planner/proto/trajectory_validation.proto";
+import "onboard/planner/initializer/proto/initializer.proto";
+import "onboard/planner/speed/proto/speed_finder.proto";
+import "onboard/planner/scheduler/proto/scheduler.proto";
+import "onboard/proto/turn_signal.proto";
+import "onboard/planner/decision/proto/constraint.proto";
+import "onboard/planner/optimization/proto/optimizer.proto";
+import "onboard/planner/object/proto/planner_object.proto";
+import "onboard/planner/common/proto/planner_status.proto";
+
+message EstPlannerDebugProto {
+  optional TurnSignalReason turn_signal_reason_enum = 1;
+
+  optional FilteredTrajectories filtered = 3;
+  optional SpacetimePlannerTrajectories st_planner_trajectories = 4;
+
+  optional SchedulerOutputProto scheduler = 12;
+  optional ConstraintProto constraint = 6;
+  optional InitializerDebugProto initializer = 7;
+  optional TrajectoryOptimizerDebugProto trajectory_optimizer = 8;
+  optional SpeedFinderDebugProto speed_finder = 9;
+  optional TrajectoryValidationResultProto traj_validation = 10;
+
+  optional PlannerStatusProto planner_status = 11;
+
+  reserved 2, 5;
+}

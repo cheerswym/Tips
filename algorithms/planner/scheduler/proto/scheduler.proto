@@ -1,0 +1,21 @@
+syntax = "proto2";
+package qcraft.planner;
+option go_package = "qcraft-proto.ai/onboard/planner/scheduler/proto/scheduler";
+
+import "onboard/math/geometry/proto/affine_transformation.proto";
+
+message ScheduledPathBoundaryProto {
+  repeated Vec2dProto left_boundary = 1;
+  repeated Vec2dProto right_boundary = 2;
+  repeated Vec2dProto reference_center = 3;
+  repeated Vec2dProto target_left_boundary = 4;
+  repeated Vec2dProto target_right_boundary = 5;
+}
+
+message SchedulerOutputProto {
+  optional ScheduledPathBoundaryProto path_boundary = 3;
+  repeated string reasons = 4;
+  optional sfixed64 start_lane_id = 5;
+
+  reserved 1, 2;
+}

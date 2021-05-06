@@ -1,0 +1,10 @@
+syntax = "proto2";
+
+package qcraft;
+
+import "onboard/math/geometry/affine_transformation.proto";
+
+message HalfPlaneProto {
+  optional Vec2dProto start = 1;
+  optional Vec2dProto end = 2;
+}

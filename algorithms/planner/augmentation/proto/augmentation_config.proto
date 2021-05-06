@@ -1,0 +1,15 @@
+syntax = "proto2";
+
+package qcraft;
+option go_package = "qcraft-proto.ai/onboard/planner/augmentation/proto/augmentation_config";
+
+message AugmentationParameterProto {
+  optional string name = 1;
+  optional double min = 2;
+  optional double max = 3;
+  optional double step = 4;
+}
+
+message AugmentationConfigProto {
+  repeated AugmentationParameterProto params = 1;
+}

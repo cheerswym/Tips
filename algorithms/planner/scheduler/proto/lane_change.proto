@@ -1,0 +1,28 @@
+syntax = "proto2";
+
+package qcraft;
+option go_package = "qcraft-proto.ai/onboard/planner/scheduler/proto/lane_change";
+
+import "onboard/proto/turn_signal.proto";
+
+// Not using planner namespace.
+
+enum LaneChangeStage {
+  LCS_NONE = 0;
+  LCS_WAITING = 1;
+  LCS_EXECUTING = 2;
+  LCS_PAUSE = 3;
+}
+
+message LaneChangeStateProto {
+  optional LaneChangeStage stage = 1;
+  optional bool entered_target_lane = 3;
+  // Whether this is lane change to left side.
+  optional bool lc_left = 5;
+
+  optional TurnSignal turn_signal = 7;
+
+  reserved 2, 4, 6;
+
+  // Next ID: 8
+}

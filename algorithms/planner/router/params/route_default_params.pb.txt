@@ -1,0 +1,17 @@
+# stops map match 
+poi_match_param {
+  filter { radius_error: 7.0 heading_error: 0.0 motoway_only: true }
+  sorter { dist_weight: 1.0 heading_weight: 0.0 }
+  match_type: STATIONARY
+}
+# when on driving.
+on_driving_param {
+  filter { radius_error: 7.0 heading_error: 0.8 motoway_only: true }
+  sorter { dist_weight: 0.8 heading_weight: 0.2 }
+  match_type: DRIVING
+}
+# route search cost param
+cost_param { turn_cost { right_turn: 10 infeasible_u_turn: 1000 } }
+
+# basic map param
+default_lane_width: 3.5

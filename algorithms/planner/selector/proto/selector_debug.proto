@@ -1,0 +1,55 @@
+syntax = "proto2";
+
+package qcraft.planner;
+
+option go_package = "qcraft-proto.ai/onboard/planner/selector/proto/selector_debug";
+
+import "onboard/proto/trajectory_point.proto";
+import "onboard/proto/prediction.proto";
+
+message SelectorFeatureCost {
+  optional string name = 1;
+  optional double cost = 2;
+  repeated string extra_info = 3;
+}
+
+message SelectorFeature {
+  optional string name = 1;
+  repeated string sub_names = 2;
+  repeated double values = 3;
+  optional bool is_common = 4;
+  repeated string extra_info = 5;
+}
+
+message TrajectoryCost {
+  optional int64 start_lane_id = 1;
+  repeated SelectorFeatureCost features = 2;
+  optional double sum_common = 3;
+  optional double sum = 4;
+}
+
+message TrajectoryFeature {
+  optional int64 start_lane_id = 1;
+  repeated SelectorFeature features = 2;
+}
+
+message SelectorTrajectory {
+  repeated ApolloTrajectoryPointProto trajectory_points = 1;
+}
+
+message SelectorDebugProto {
+  repeated TrajectoryCost traj_costs = 1;
+  // For data dumping
+  repeated TrajectoryFeature candidate_trajs_features = 100;
+  repeated SelectorTrajectory candidate_trajs = 101;
+  optional TrajectoryFeature expert_traj_features = 102;
+  optional SelectorTrajectory expert_traj = 103;
+  repeated ProphnetDumpedFeatureProto.LanesDumpedFeature
+      candidate_lanes_model_features = 104;
+  optional ProphnetDumpedFeatureProto.LanesDumpedFeature
+      expert_lane_model_features = 105;
+  repeated ProphnetDumpedFeatureProto.ObjectsDumpedFeature
+      candidate_trajs_model_features = 106;
+  optional ProphnetDumpedFeatureProto.ObjectsDumpedFeature
+      expert_traj_model_features = 107;
+}
