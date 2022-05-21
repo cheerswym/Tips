@@ -1,0 +1,129 @@
+syntax = "proto2";
+
+package qcraft;
+option go_package = "qcraft-proto.ai/onboard/perception/tracker/motion_filter_2/proto/motion_filter";
+
+import "onboard/math/geometry/proto/affine_transformation.proto";
+import "onboard/perception/tracker/motion_filter_2/proto/meas_model.proto";
+
+message MotionFilterParamProto {
+  optional double state_x_init_std = 1;
+  optional double state_y_init_std = 2;
+  optional double state_heading_init_std = 3;
+  optional double state_vel_init_std = 4;
+  optional double state_acc_init_std = 5;
+  optional double state_yawd_init_std = 6;
+  optional double state_vel_x_init_std = 7;
+  optional double state_vel_y_init_std = 8;
+  optional double state_acc_x_init_std = 9;
+  optional double state_acc_y_init_std = 10;
+  optional double state_length_init_std = 38;
+  optional double state_width_init_std = 39;
+  optional double state_height_init_std = 40;
+  // Process noise.
+  optional double state_x_process_noise_std = 11;
+  optional double state_y_process_noise_std = 12;
+  optional double state_heading_process_noise_std = 13;
+  optional double state_vel_process_noise_std = 14;
+  optional double state_acc_process_noise_std = 15;
+  optional double state_yawd_process_noise_std = 16;
+  optional double state_vel_x_process_noise_std = 17;
+  optional double state_vel_y_process_noise_std = 18;
+  optional double state_acc_x_process_noise_std = 19;
+  optional double state_acc_y_process_noise_std = 20;
+  optional double state_jerk_process_noise_std = 36 [deprecated = true];
+  optional double state_length_process_noise_std = 41;
+  optional double state_width_process_noise_std = 42;
+  optional double state_height_process_noise_std = 43;
+  // Measurement noise.
+  optional double state_x_measurement_noise_std = 21;
+  optional double state_y_measurement_noise_std = 22;
+  optional double state_heading_measurement_noise_std = 23;
+  optional double state_vel_measurement_noise_std = 24;
+  optional double state_acc_measurement_noise_std = 25;
+  optional double state_yawd_measurement_noise_std = 26;
+  optional double state_vel_x_measurement_noise_std = 27;
+  optional double state_vel_y_measurement_noise_std = 28;
+  optional double state_acc_x_measurement_noise_std = 29;
+  optional double state_acc_y_measurement_noise_std = 30;
+  optional double state_length_measurement_noise_std = 44;
+  optional double state_width_measurement_noise_std = 45;
+  optional double state_height_measurement_noise_std = 46;
+  optional double state_x_y_measurement_correlation_coefficient = 50
+      [default = 0.0];
+  optional double state_vel_x_vel_y_measurement_correlation_coefficient = 51
+      [default = 0.0];
+  // Param related to AUKF.
+  optional bool use_adaptive_ukf = 31;
+  optional double state_aukf_forget_ratio = 32;
+  optional double state_aukf_forget_accmulate = 33;
+  optional bool use_adaptive_measurement_noise = 34;
+  optional bool use_adaptive_process_noise = 35;
+  // Param for image 2D
+  optional double state_process_noise_position_weight_std = 47;
+  optional double state_process_noise_velocity_weight_std = 48;
+  optional double state_measurement_noise_std = 49;
+  enum Type {
+    POINT_CP = 0;
+    POINT_CV = 1;
+    POINT_CA = 2;
+    CAR_CP = 3;
+    CAR_CV = 4;
+    CAR_CA = 5;
+    CAR_CTRV = 6;
+  }
+  optional Type type = 37;
+}
+
+message WeightedMotionFilterParamProto {
+  optional MotionFilterParamProto filter_param = 1;
+  optional double filter_weight = 2;
+}
+
+message IMMProto {
+  repeated WeightedMotionFilterParamProto params = 1;
+}
+
+message Vec6dProto {
+  // Length of m must be 6.
+  repeated double m = 1;
+}
+
+message ActionInfo {
+  enum Type {
+    NONE = 0;
+    CONSTRUCT = 1;
+    INIT = 2;
+    PREDICT = 3;
+    UPDATE = 4;
+    RESET = 5;
+  }
+  optional Type type = 1;
+  optional bool is_car_model = 2;
+  optional Vec6dProto state = 3;
+  // We only consider main diagonal of 6x6 state cov for simplicity.
+  optional Vec6dProto state_cov = 4;
+  repeated double model_prob = 5 [packed = true];
+}
+
+message FilterProto {
+  optional MotionFilterParamProto param = 1;
+  repeated MeasModelProto meas_model = 2;
+}
+
+message ExtentFilterProto {
+  optional Vec3dProto state = 1;
+  optional Vec3dProto state_cov = 2;
+  optional MeasModelProto meas_model = 3;
+}
+
+message MotionFilterProto {
+  optional int32 id = 1 [default = -1];
+  optional bool is_car_model = 2;
+  optional double timestamp = 3;
+  optional double dt = 4 [default = 0.0];  // Only used for predict.
+  optional Mat2dProto pos_cov = 5;
+  repeated ActionInfo action_info = 6;
+  repeated FilterProto filters = 7;
+  optional ExtentFilterProto extent_filter = 8;
+}

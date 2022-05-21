@@ -1,0 +1,18 @@
+module_class_name: "AutonomyModule"
+module_name: AUTONOMY_MODULE
+inputs: { field_name: "autonomy_state_proto", allow_xnode_input: true }
+inputs: { field_name: "system_state_proto" }
+outputs: { field_name: "crash_log_proto" }
+# system msg
+outputs: { field_name: "system_command_proto" }
+outputs: { field_name: "counter_proto" }
+outputs: { field_name: "execution_issue_proto" }
+outputs: { field_name: "log_proto" }
+outputs: { field_name: "q_events_proto" }
+outputs: { field_name: "system_info_proto" }
+outputs: { field_name: "trace_proto" }
+outputs: { field_name: "lite_run_info_proto" }
+
+inputs: { field_name: "rsim_stop_proto" }
+
+module_startup_exit_priority: 0

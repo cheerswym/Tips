@@ -1,0 +1,20 @@
+# DO NOT USE IN PROCUTION, FOR MODULE TEST ONLY. 
+module_class_name: "MockMiniliteModule"
+module_name: MOCK_MINILITE_MODULE
+inputs: { field_name: "execution_issue_proto" }
+outputs: { field_name: "gnss_raw_reading_proto" }
+inputs: {
+  field_name: "shm_message_metadata",
+  channel: "gnss_raw_reading_proto"
+}
+
+# system msg
+inputs: { field_name: "system_command_proto" }
+outputs: { field_name: "counter_proto" }
+outputs: { field_name: "execution_issue_proto" }
+outputs: { field_name: "log_proto" }
+outputs: { field_name: "q_events_proto" }
+outputs: { field_name: "system_info_proto" }
+outputs: { field_name: "system_state_proto" }
+outputs: { field_name: "trace_proto" }
+# channel checker config

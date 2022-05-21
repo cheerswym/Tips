@@ -1,0 +1,4 @@
+# lite_module_config_filenames : "mock_gnss_imu_driver_module.pb.txt"
+# lite_module_config_filenames : "mock_spin_publisher_module.pb.txt"
+lite_module_config_filenames: "logging_module.pb.txt"
+# lite_module_config_filenames : "mock_logging_module.pb.txt"

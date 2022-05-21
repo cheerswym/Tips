@@ -1,0 +1,16 @@
+syntax = "proto2";
+
+package qcraft.vis;
+option go_package = "qcraft-proto.ai/onboard/vis/common/proto/colormap";
+
+import "onboard/vis/common/proto/color.proto";
+
+message ColormapProto {
+  optional string scheme = 1;
+  optional string category = 2;
+  repeated ColorRGBAProto data = 3;
+}
+
+message ColormapsProto {
+  repeated ColormapProto colormaps = 1;
+}

@@ -1,0 +1,30 @@
+# Interactive playback module
+module_class_name: "InteractivePlaybackModule"
+module_name: INTERACTIVE_PLAYBACK_MODULE
+inputs: { field_name: "playback_cmd" }
+outputs: { field_name: "can_driver_debug_proto" }
+outputs: { field_name: "chassis" }
+outputs: { field_name: "gnss_imu_driver_debug_proto" }
+outputs: { field_name: "gnss_raw_reading_proto" }
+outputs: { field_name: "imu_raw_reading_proto" }
+outputs: { field_name: "localization_transform_proto" }
+outputs: { field_name: "pose_proto", channel: "gnss_pose_proto" }
+outputs: { field_name: "pose_proto" }
+outputs: { field_name: "positioning_filter_state_proto" }
+outputs: { field_name: "shm_message_metadata", channel: "decoded_image" }
+outputs: { field_name: "shm_message_metadata", channel: "encoded_image" }
+outputs: { field_name: "shm_message_metadata", channel: "lidar_spin" }
+outputs: { field_name: "shm_message_metadata", channel: "encoded_lidar_frame" }
+outputs: { field_name: "vehicle_control_status_proto" }
+outputs: { field_name: "vehicle_operation_status_proto" }
+outputs: { field_name: "objects_proto" }
+outputs: { field_name: "traffic_light_states_proto" }
+outputs: { field_name: "trajectory_proto" }
+outputs: { field_name: "hmi_content_proto" }
+outputs: { field_name: "v2x_proto" }
+outputs: { field_name: "update_semantic_map_proto" }
+outputs: { field_name: "update_run_params_proto" }
+outputs: { field_name: "track_classifier_debug_proto" }
+outputs: { field_name: "radar_measurements_proto" }
+# ... publish everything, it's ok to not list all of them out, since this
+# module is only run offboard.

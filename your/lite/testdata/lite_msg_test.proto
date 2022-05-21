@@ -1,0 +1,16 @@
+syntax = "proto2";
+
+package qcraft;
+option go_package = "qcraft-proto.ai/onboard/lite/testdata/lite_msg_test";
+
+import "onboard/lite/proto/lite_common.proto";
+
+message FakeSum {
+  optional LiteHeader header = 1;
+  optional double sum = 2;
+}
+
+message FakeCounter {
+  optional LiteHeader header = 1;
+  optional int32 count = 2;
+}

@@ -1,0 +1,64 @@
+syntax = "proto2";
+
+package qcraft;
+option go_package = "qcraft-proto.ai/onboard/lite/transport/proto/node_service";
+
+import "onboard/proto/camera.proto";
+import "onboard/proto/lidar.proto";
+import "onboard/proto/vehicle.proto";
+import "onboard/proto/lite_msg.proto";
+import "onboard/lite/proto/lite_common.proto";
+import "onboard/lite/proto/shm_message.proto";
+
+message TransmitLiteMsgRequest {
+  optional LiteHeader header = 1;
+  optional LiteMsgWrapper lite_message = 2;
+}
+
+message TransmitLiteMsgResponse {
+  optional bool success = 1;
+}
+
+message TransmitShmMsgRequest {
+  optional LiteHeader header = 1;
+  optional ShmMsgType shm_msg_type = 2;
+  optional bytes data = 3;
+  optional LidarParamsProto lidar_params = 4;
+  optional EncodedImageMetadata encoded_image_meta = 5;
+  optional DecodedImageMetadata decoded_image_meta = 6;
+  optional SpinMetadata spin_meta = 7;
+  optional EncodedLidarFrameMetaData encoded_lidar_frame_meta = 8;
+}
+
+message TransmitShmMsgResponse {
+  optional bool success = 1;
+}
+
+message QueryRemoteNodeRequest {
+  optional string full_node_name = 1;  // query node
+
+  enum QueryType { QUERY_NODE_INPUTS = 1; }
+  optional QueryType query_type = 2;
+}
+
+message QueryRemoteNodeResponse {
+  optional bool success = 1;
+  optional string full_node_name = 2;  // response node
+
+  message NodeInput {
+    optional string field_name = 1;
+    optional string channel = 2;
+    optional string domain = 3;
+  }
+  repeated NodeInput node_inputs = 3;
+}
+
+service NodeService {
+  rpc TransmitLiteMsg(TransmitLiteMsgRequest) returns (TransmitLiteMsgResponse);
+  rpc TransmitShmMsg(TransmitShmMsgRequest) returns (TransmitShmMsgResponse);
+  rpc QueryRemoteNode(QueryRemoteNodeRequest) returns (QueryRemoteNodeResponse);
+  rpc TransmitLiteMsgStreamed(stream TransmitLiteMsgRequest)
+      returns (stream TransmitLiteMsgResponse);
+  rpc TransmitShmMsgStreamed(stream TransmitShmMsgRequest)
+      returns (stream TransmitShmMsgResponse);
+}

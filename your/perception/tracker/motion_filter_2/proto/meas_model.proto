@@ -1,0 +1,49 @@
+syntax = "proto2";
+
+package qcraft;
+option go_package = "qcraft-proto.ai/onboard/perception/tracker/motion_filter_2/proto/meas_model";
+
+import "onboard/math/geometry/proto/affine_transformation.proto";
+
+message MeasModel1D {
+  optional double measurement = 1;
+  optional double meas_noise = 2;
+}
+
+message MeasModel2D {
+  optional Vec2dProto measurement = 1;
+  optional Mat2dProto meas_noise = 2;
+}
+
+message MeasModel3D {
+  optional Vec3dProto measurement = 1;
+  optional Mat3dProto meas_noise = 2;
+}
+
+message MeasModel4D {
+  optional Vec4dProto measurement = 1;
+  optional Mat4dProto meas_noise = 2;
+}
+
+message MeasModelProto {
+  enum Type {
+    NONE = 0;
+    POSITION = 1;
+    HEADING = 2;
+    SPEED = 3;
+    VELOCITY = 4;
+    POS_SPEED = 5;
+    POS_VELOCITY = 6;
+    POS_HEADING = 7;
+    POS_HEADING_VELOCITY = 8;
+    HEADING_VELOCITY = 9;
+    BBOX = 10;
+  }
+  optional Type meas_type = 1;
+  oneof MeasModel {
+    MeasModel1D meas_model_1d = 2;
+    MeasModel2D meas_model_2d = 3;
+    MeasModel3D meas_model_3d = 4;
+    MeasModel4D meas_model_4d = 5;
+  }
+}

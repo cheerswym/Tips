@@ -1,0 +1,19 @@
+module_class_name: "LitePerfTestPubSubModule"
+module_name: LITE_PERF_TEST_PUB_SUB_MODULE
+inputs: {
+  field_name: "shm_message_metadata",
+  channel: "lite_perf_test_channel"
+}
+outputs: {
+  field_name: "shm_message_metadata",
+  channel: "lite_perf_test_channel"
+}
+
+module_startup_exit_priority: 0
+
+# heartbeat config of the module.
+heartbeat_config: { kickout_deadline: 2000000, terminate_deadline: 10000000 }
+
+# module restart times, 0:not restart,when the module crash,system will
+# shutdown.
+module_restart_times: 0

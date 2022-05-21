@@ -1,0 +1,3 @@
+# Static exhibition
+lite_module_config_filenames: "spin_publisher_module.pb.txt"
+lite_module_config_filenames: "image_publisher_module.pb.txt"

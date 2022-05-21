@@ -1,0 +1,91 @@
+sensor_scenarios: {
+  cameras: CAM_L_FRONT,
+  cameras: CAM_L_FRONT_LEFT,
+  cameras: CAM_R_FRONT,
+  cameras: CAM_L_FRONT_RIGHT,
+  cameras: CAM_R_FRONT_RIGHT,
+  cameras: CAM_INSIDE_DRIVER,
+  lidars: LDR_FRONT_LEFT,
+  lidars: LDR_FRONT_RIGHT,
+  lidars: LDR_FRONT_LEFT_BLIND,
+  lidars: LDR_FRONT_RIGHT_BLIND,
+  lidars: LDR_REAR_BLIND,
+  radars: RAD_FRONT,
+  radars: RAD_REAR,
+  scenario: "dbqv2",
+}
+
+sensor_scenarios: {
+  # Compatible with dbqv2
+  cameras: CAM_R_FRONT,
+  cameras: CAM_R_FRONT_RIGHT,
+
+  cameras: CAM_L_FRONT,
+  cameras: CAM_L_FRONT_LEFT,
+  cameras: CAM_R_REAR_RIGHT,
+  cameras: CAM_R_RIGHT,
+  cameras: CAM_L_FRONT_RIGHT,
+  cameras: CAM_R_FRONT_HD,
+  cameras: CAM_L_LEFT,
+  cameras: CAM_L_REAR_LEFT,
+  cameras: CAM_R_FRONT_DIM,
+  cameras: CAM_INSIDE_DRIVER,
+  lidars: LDR_FRONT_LEFT,
+  lidars: LDR_FRONT_RIGHT,
+  lidars: LDR_FRONT_LEFT_BLIND,
+  lidars: LDR_FRONT_RIGHT_BLIND,
+  lidars: LDR_REAR_BLIND,
+  radars: RAD_FRONT,
+  radars: RAD_REAR,
+  scenario: "dbqv3",
+}
+
+sensor_scenarios: {
+  cameras: CAM_PBQ_FRONT_WIDE,
+  cameras: CAM_PBQ_FRONT_TELE,
+  cameras: CAM_PBQ_FRONT_LEFT,
+  cameras: CAM_PBQ_FRONT_RIGHT,
+  cameras: CAM_PBQ_REAR_LEFT,
+  cameras: CAM_PBQ_REAR_RIGHT,
+  cameras: CAM_PBQ_REAR,
+  cameras: CAM_R_FRONT_DIM,
+  cameras: CAM_INSIDE_DRIVER,
+  lidars: LDR_FRONT,
+  lidars: LDR_FRONT_LEFT,
+  lidars: LDR_FRONT_RIGHT,
+  lidars: LDR_REAR_LEFT,
+  lidars: LDR_REAR_RIGHT,
+  lidars: LDR_FRONT_LEFT_BLIND,
+  lidars: LDR_FRONT_RIGHT_BLIND,
+  radars: RAD_FRONT,
+  radars: RAD_REAR,
+  radars: RAD_REAR_RIGHT,
+  radars: RAD_REAR_LEFT,
+  radars: RAD_FRONT_RIGHT,
+  radars: RAD_FRONT_LEFT,
+  scenario: "dbqv4",
+}
+
+sensor_scenarios: {
+  cameras: CAM_PBQ_FRONT_WIDE,
+  cameras: CAM_PBQ_FRONT_TELE,
+  cameras: CAM_PBQ_FRONT_LEFT,
+  cameras: CAM_PBQ_FRONT_RIGHT,
+  cameras: CAM_PBQ_REAR_LEFT,
+  cameras: CAM_PBQ_REAR_RIGHT,
+  cameras: CAM_PBQ_REAR,
+  cameras: CAM_INSIDE_DRIVER,
+  cameras: CAM_R_FRONT_DIM,
+  lidars: LDR_FRONT,
+  radars: RAD_FRONT,
+  radars: RAD_REAR_RIGHT,
+  radars: RAD_REAR_LEFT,
+  radars: RAD_FRONT_RIGHT,
+  radars: RAD_FRONT_LEFT,
+  scenario: "pbqv1",
+}
+
+ignore_checkers: {
+  channel_checks: { channel: "semantic_segmentation_results_proto" }
+  scenario: "pbqv1",
+}

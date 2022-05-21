@@ -1,0 +1,34 @@
+# GNSS/IMU Driver Module
+module_class_name: "GnssImuDriverModule"
+module_name: GNSS_IMU_DRIVER_MODULE
+outputs: { field_name: "gnss_imu_driver_debug_proto" }
+outputs: { field_name: "gnss_raw_reading_proto" }
+outputs: { field_name: "imu_raw_reading_proto" }
+outputs: { field_name: "gnss_raw_message_proto" }
+outputs: { field_name: "gnss_ephemeris_proto", channel: "gps_ephemeris" }
+outputs: { field_name: "gnss_ephemeris_proto", channel: "bds_ephemeris" }
+outputs: { field_name: "gnss_ephemeris_proto", channel: "glo_ephemeris" }
+outputs: { field_name: "gnss_heading_proto" }
+outputs: { field_name: "epoch_observation_proto" }
+# system msg
+inputs: { field_name: "system_command_proto" }
+outputs: { field_name: "counter_proto" }
+outputs: { field_name: "execution_issue_proto" }
+outputs: { field_name: "log_proto" }
+outputs: { field_name: "q_events_proto" }
+outputs: { field_name: "system_info_proto" }
+outputs: { field_name: "system_state_proto" }
+outputs: { field_name: "trace_proto" }  # channel checker config
+checkers: {
+  field_name: "gnss_raw_reading_proto",
+  min_frequency: 20,
+  max_frequency: 20
+}
+checkers: {
+  field_name: "imu_raw_reading_proto",
+  min_frequency: 100,
+  max_frequency: 125,
+  frame_window_size: 100
+}
+
+module_startup_exit_priority: 2

@@ -1,0 +1,2 @@
+# Launch run config
+lite_module_config_filenames: "vantage_forwarding_module.pb.txt"

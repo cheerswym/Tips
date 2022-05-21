@@ -1,0 +1,25 @@
+similarity_matrix_builder {
+  gates {
+    gate_params { gate_type: TYPE gate_thresholds: 0.5 }
+    gate_params {
+      gate_type: TYPE_CIRCLE
+      gate_thresholds: 1
+      gate_thresholds: 100
+    }
+  }
+  metrics {
+    metric_params { metric_type: CAMERA_TRACKER_ID metric_weight: 0.45 }
+    metric_params {
+      metric_type: VEHICLE_IOU
+      metric_weight: 0.45
+      metric_thresholds: 0.1
+    }
+    metric_params {
+      metric_type: EUCLIDEAN_DIST
+      metric_weight: 0.1
+      metric_thresholds: 9.0
+    }
+
+  }
+}
+match_solver { solver_algorithm: GNN }

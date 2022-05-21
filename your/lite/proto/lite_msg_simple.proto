@@ -1,0 +1,18 @@
+syntax = "proto2";
+
+package qcraft;
+option go_package = "qcraft-proto.ai/onboard/lite/proto/lite_msg_simple";
+
+import "onboard/lite/proto/lite_common.proto";
+
+message LitePerfTestMsgProto {
+  optional LiteHeader header = 1;
+  optional bool end_flag = 2;
+  optional sfixed64 sn = 3;
+  optional fixed64 len = 4;
+  repeated fixed64 data = 5;
+}
+
+message LiteMsgSimpleProto {
+  optional LiteHeader header = 1;
+}

@@ -1,0 +1,47 @@
+# Tracker Module
+module_class_name: "TrackerModule"
+module_name: TRACKER_MODULE
+inputs: { field_name: "label_frame_proto" }
+inputs: { field_name: "lidar_host_time_diff_proto" }
+inputs: { field_name: "localization_transform_proto", allow_xnode_input: true }
+inputs: { field_name: "pose_proto" }  # Onboard only
+outputs: { field_name: "execution_issue_proto" }
+inputs: { field_name: "measurements_proto", channel: "measurements_proto" }
+inputs: { field_name: "measurements_proto", channel: "laser_measurements" }
+inputs: { field_name: "measurements_proto", channel: "radar_measurements" }
+inputs: { field_name: "measurements_proto", channel: "camera_measurements" }
+inputs: { field_name: "shm_message_metadata", channel: "decoded_image" }
+inputs: { field_name: "sensor_fovs_proto" }
+outputs: { field_name: "objects_proto" }
+outputs: { field_name: "tracker_debug_proto_with_rollback" }
+
+# system msg
+inputs: { field_name: "system_command_proto" }
+outputs: { field_name: "counter_proto" }
+outputs: { field_name: "execution_issue_proto" }
+outputs: { field_name: "log_proto" }
+outputs: { field_name: "q_events_proto" }
+outputs: { field_name: "system_info_proto" }
+outputs: { field_name: "system_state_proto" }
+outputs: { field_name: "trace_proto" }
+outputs: { field_name: "canvas_buffers_proto" }
+# Follow message are for offboard only.
+inputs: { field_name: "pose_proto", channel: "sensor_pose" }  # Simulation only
+outputs: { field_name: "detection_objects_proto" }
+outputs: { field_name: "label_frame_proto" }
+
+# channel checker config
+checkers: {
+  field_name: "objects_proto",
+  min_frequency: 5,
+  max_frequency: 30,
+  frame_window_size: 10
+}
+
+# checkers:{field_name:"tracker_debug_proto", min_frequency:10,
+# max_frequency:10}
+
+# module startup exit priority
+module_startup_exit_priority: 2
+
+module_restart_times: 1

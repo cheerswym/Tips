@@ -1,0 +1,29 @@
+# V2x Module
+module_class_name: "V2xModule"
+module_name: V2X_MODULE
+inputs: { field_name: "hmi_content_proto" }
+inputs: { field_name: "localization_transform_proto", allow_xnode_input: true }
+inputs: { field_name: "objects_proto" }
+inputs: { field_name: "traffic_light_states_proto" }
+inputs: { field_name: "trajectory_proto" }
+inputs: { field_name: "v2x_raw_input_proto" }
+outputs: { field_name: "v2x_proto" }
+outputs: { field_name: "v2x_raw_input_proto" }
+# system msg
+outputs: { field_name: "execution_issue_proto" }
+outputs: { field_name: "counter_proto" }
+outputs: { field_name: "system_info_proto" }
+outputs: { field_name: "log_proto" }
+outputs: { field_name: "q_events_proto" }
+outputs: { field_name: "trace_proto" }
+outputs: { field_name: "system_state_proto" }
+inputs: { field_name: "system_command_proto" }
+inputs: { field_name: "pose_proto" }
+outputs: { field_name: "rerouting_request_proto" }
+inputs: { field_name: "remote_assist_status_proto" }
+inputs: { field_name: "chassis" }
+inputs: { field_name: "autonomy_state_proto" }
+inputs: { field_name: "chassis_detail" }
+inputs: { field_name: "update_run_params_proto" }
+
+module_startup_exit_priority: 2

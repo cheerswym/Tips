@@ -1,0 +1,72 @@
+# Spin publisher Module
+module_class_name: "SpinPublisherModule"
+module_name: SPIN_PUBLISHER_MODULE
+inputs: { field_name: "pose_proto" }
+# Start of only used in simulation.
+inputs: { field_name: "pose_proto", channel: "sensor_pose" }
+inputs: { field_name: "shm_message_metadata", channel: "log_lidar_spin" }
+# End of only used in simulation.
+outputs: { field_name: "execution_issue_proto" }
+outputs: { field_name: "lidar_host_time_diff_proto" }
+outputs: { field_name: "pandar_packet_proto" }
+outputs: { field_name: "shm_message_metadata", channel: "lidar_spin" }
+outputs: { field_name: "shm_message_metadata", channel: "encoded_lidar_frame" }
+# system msg
+inputs: { field_name: "system_command_proto" }
+outputs: { field_name: "counter_proto" }
+outputs: { field_name: "execution_issue_proto" }
+outputs: { field_name: "log_proto" }
+outputs: { field_name: "q_events_proto" }
+outputs: { field_name: "system_info_proto" }
+outputs: { field_name: "system_state_proto" }
+outputs: { field_name: "trace_proto" }  # channel checker config
+checkers: {
+  field_name: "shm_message_metadata",
+  channel: "lidar_spin",
+  sensor_id: "LDR_FRONT_LEFT",
+  min_frequency: 10,
+  max_frequency: 10
+}
+
+checkers: {
+  field_name: "shm_message_metadata",
+  channel: "encoded_lidar_frame",
+  sensor_id: "LDR_FRONT_LEFT",
+  min_frequency: 10,
+  max_frequency: 10
+}
+
+checkers: {
+  field_name: "shm_message_metadata",
+  channel: "lidar_spin",
+  sensor_id: "LDR_FRONT_RIGHT",
+  min_frequency: 10,
+  max_frequency: 10
+}
+
+checkers: {
+  field_name: "shm_message_metadata",
+  channel: "encoded_lidar_frame",
+  sensor_id: "LDR_FRONT_RIGHT",
+  min_frequency: 10,
+  max_frequency: 10
+}
+
+# checkers:{field_name:"shm_message_metadata", channel:"lidar_spin",
+# sensor_id:"LDR_FRONT_LEFT_BLIND", min_frequency:10, max_frequency:10}
+# checkers:{field_name:"shm_message_metadata", channel:"encoded_lidar_frame",
+# sensor_id:"LDR_FRONT_LEFT_BLIND", min_frequency:10, max_frequency:10}
+
+# checkers:{field_name:"shm_message_metadata", channel:"lidar_spin",
+# sensor_id:"LDR_FRONT_RIGHT_BLIND", min_frequency:10, max_frequency:10}
+# checkers:{field_name:"shm_message_metadata", channel:"encoded_lidar_frame",
+# sensor_id:"LDR_FRONT_RIGHT_BLIND", min_frequency:10, max_frequency:10}
+
+# checkers:{field_name:"shm_message_metadata", channel:"lidar_spin",
+# sensor_id:"LDR_REAR_BLIND", min_frequency:10, max_frequency:10}
+# checkers:{field_name:"shm_message_metadata", channel:"encoded_lidar_frame",
+# sensor_id:"LDR_REAR_BLIND", min_frequency:10, max_frequency:10}
+
+module_startup_exit_priority: 2
+
+module_restart_times: 1

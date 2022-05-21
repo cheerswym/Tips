@@ -1,0 +1,30 @@
+syntax = "proto2";
+
+package qcraft;
+option go_package = "qcraft-proto.ai/onboard/control/proto/vehicle_state";
+
+import "onboard/math/geometry/proto/affine_transformation.proto";
+import "onboard/proto/chassis.proto";
+import "onboard/proto/positioning.proto";
+
+message VehicleStateProto {
+  optional double x = 1 [default = 0.0];
+  optional double y = 2 [default = 0.0];
+  optional double z = 3 [default = 0.0];
+  optional double timestamp = 4 [default = 0.0];
+  optional double roll = 5 [default = 0.0];
+  optional double pitch = 6 [default = 0.0];
+  optional double yaw = 7 [default = 0.0];
+  optional double heading = 8 [default = 0.0, deprecated = true];
+  optional double kappa = 9 [default = 0.0];
+  optional double linear_velocity = 10 [default = 0.0];
+  optional double angular_velocity = 11 [default = 0.0];
+  optional double linear_acceleration = 12 [default = 0.0];
+  optional Chassis.GearPosition gear = 13;
+  optional Chassis.DrivingMode driving_mode = 14;
+  optional PoseProto pose = 15;
+  optional Vec3dProto local_imagery_normal = 16 [deprecated = true];
+  optional double chassis_steering_percentage = 17;
+  optional double front_wheel_steering_angle = 18;
+  optional bool is_auto_mode = 19;
+}

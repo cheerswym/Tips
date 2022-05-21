@@ -1,0 +1,37 @@
+syntax = "proto2";
+
+package qcraft.control;
+option go_package = "qcraft-proto.ai/onboard/control/openloop_control/proto/openloop_cmd";
+
+message OpenloopCmd {
+  enum Type {
+    THROTTLEBRAKE = 1;
+    ACCELERATION = 2;
+    STEER = 3;
+  }
+
+  optional Type testtype = 1 [default = THROTTLEBRAKE];
+  repeated ThrottleBrake throttle_brake_cmd = 2;
+  optional double accel_acceleration_cmd = 3 [default = 1.0];
+  optional double brake_acceleration_cmd = 4 [default = -1.0];
+  optional double max_steer_percentage_cmd = 5 [default = 5.0];
+  optional double max_speed_cmd = 6 [default = 5.0];
+  optional double sample_period_steer_cmd = 7 [default = 10.0];
+  optional PIDConfig pid_config = 8;
+  optional bool enbale_inverse_gear = 9 [default = false];
+}
+
+message ThrottleBrake {
+  optional double aperture = 1;
+  optional double duration_time = 2;
+}
+
+message PIDConfig {
+  optional double speed_kp = 1 [default = 5.0];
+  optional double speed_ki = 2 [default = 10.0];
+  optional double speed_kd = 3 [default = 0.0];
+  optional double speed_integral_limit = 4 [default = 100.0];
+  optional double aperture_min = 5 [default = -70.0];
+  optional double aperture_max = 6 [default = 70.0];
+  optional double aperture_rate_limit = 7 [default = 10.0];
+}

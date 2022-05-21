@@ -1,0 +1,32 @@
+# QView Publisher Module
+module_class_name: "QViewPublisherModule"
+module_name: QVIEW_PUBLISHER_MODULE
+inputs: { field_name: "objects_proto" }
+inputs: { field_name: "obstacles_proto" }
+inputs: { field_name: "control_command" }
+inputs: { field_name: "pose_proto" }
+inputs: { field_name: "planner_debug_proto" }
+inputs: { field_name: "trajectory_proto" }
+inputs: { field_name: "hmi_content_proto" }
+inputs: { field_name: "shm_message_metadata", channel: "decoded_image" }
+inputs: { field_name: "shm_message_metadata", channel: "lidar_spin" }
+inputs: {
+  field_name: "shm_message_metadata",
+  channel: "downsized_encoded_image"
+}
+inputs: { field_name: "localization_transform_proto", allow_xnode_input: true }
+inputs: { field_name: "v2x_proto", channel: "hmi_v2x_proto" }
+inputs: { field_name: "update_semantic_map_proto" }
+inputs: { field_name: "update_run_params_proto" }
+inputs: { field_name: "q_run_events_proto" }
+# system msg
+inputs: { field_name: "system_command_proto" }
+outputs: { field_name: "counter_proto" }
+outputs: { field_name: "execution_issue_proto" }
+outputs: { field_name: "log_proto" }
+outputs: { field_name: "q_events_proto" }
+outputs: { field_name: "system_info_proto" }
+outputs: { field_name: "system_state_proto" }
+outputs: { field_name: "trace_proto" }
+
+module_startup_exit_priority: 2

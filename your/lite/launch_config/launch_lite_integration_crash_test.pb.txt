@@ -1,0 +1,4 @@
+lite_module_config_filenames: "autonomy_module.pb.txt"
+# lite_module_config_filenames: "mock_gnss_imu_driver_module.pb.txt"
+# lite_module_config_filenames: "autonomy_state_module.pb.txt"
+lite_module_config_filenames: "mock_self_destruct_module.pb.txt"

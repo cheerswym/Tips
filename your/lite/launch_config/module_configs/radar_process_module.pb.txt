@@ -1,0 +1,27 @@
+module_class_name: "RadarProcessModule"
+module_name: RADAR_PROCESS_MODULE
+inputs: { field_name: "pose_proto" }
+inputs: { field_name: "raw_radar_objects_proto" }
+inputs: { field_name: "localization_transform_proto", allow_xnode_input: true }
+# Start of only used in simulation.
+inputs: { field_name: "pose_proto", channel: "sensor_pose" }
+# Radar measurements output
+outputs: { field_name: "measurements_proto", channel: "radar_measurements" }
+# system msg
+inputs: { field_name: "system_command_proto" }
+outputs: { field_name: "counter_proto" }
+outputs: { field_name: "execution_issue_proto" }
+outputs: { field_name: "log_proto" }
+outputs: { field_name: "system_info_proto" }
+outputs: { field_name: "system_state_proto" }
+outputs: { field_name: "trace_proto" }
+# channel checker config
+checkers: {
+  field_name: "measurements_proto",
+  channel: "radar_measurements",
+  min_frequency: 20,
+  max_frequency: 30,
+  frame_window_size: 25
+}
+
+module_startup_exit_priority: 2

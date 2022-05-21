@@ -1,0 +1,20 @@
+similarity_matrix_builder {
+  gates {
+    gate_params {
+      gate_type: TYPE_CIRCLE
+      gate_thresholds: 1
+      gate_thresholds: 49
+    }
+  }
+  metrics {
+    metric_params { metric_type: RADAR_MAHALANOBIS_DIST metric_weight: 0.7 }
+    metric_params {
+      metric_type: BEV_IOU
+      metric_weight: 0.3
+      metric_thresholds: 0.1
+      metric_thresholds: 0.1
+      metric_thresholds: 0.1
+    }
+  }
+}
+match_solver { solver_algorithm: GNN_MV1 }

@@ -1,0 +1,14 @@
+# DO NOT USE IN PROCUTION, FOR MODULE TEST ONLY. 
+module_class_name: "MockSelfDestructModule"
+module_name: MOCK_SELF_DESTRUCT_MODULE
+inputs: { field_name: "system_state_proto" }
+inputs: { field_name: "system_command_proto" }
+# system msg
+outputs: { field_name: "counter_proto" }
+outputs: { field_name: "execution_issue_proto" }
+outputs: { field_name: "log_proto" }
+outputs: { field_name: "q_events_proto" }
+outputs: { field_name: "system_info_proto" }
+outputs: { field_name: "system_state_proto" }
+outputs: { field_name: "trace_proto" }
+module_startup_exit_priority: 4

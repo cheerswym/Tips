@@ -1,0 +1,37 @@
+# DO NOT USE IN PROCUTION, FOR MODULE TEST ONLY. 
+module_class_name: "TestModuleStateModule"
+module_name: TEST_MODULE_STATE_MODULE
+inputs: { field_name: "mock_module_state_proto" }
+inputs: {
+  field_name: "mock_module_state_proto",
+  channel: "sim_mock_module_state_proto_default"
+}
+inputs: {
+  field_name: "mock_module_state_proto",
+  channel: "sim_mock_module_state_proto"
+}
+inputs: {
+  field_name: "positioning_filter_state_proto",
+  channel: "sim_positioning_filter_state_proto_default"
+}
+inputs: {
+  field_name: "positioning_filter_state_proto",
+  channel: "sim_positioning_filter_state_proto"
+}
+outputs: { field_name: "mock_module_state_proto" }
+outputs: { field_name: "mock_module_state_validation_proto" }
+####
+#### default global module state channel config
+default_state_channel_pairs: {
+  source_channel: "mock_module_state_proto"
+  target_channel: "sim_mock_module_state_proto_default"
+}
+# system msg
+inputs: { field_name: "system_command_proto" }
+outputs: { field_name: "counter_proto" }
+outputs: { field_name: "execution_issue_proto" }
+outputs: { field_name: "log_proto" }
+outputs: { field_name: "q_events_proto" }
+outputs: { field_name: "system_info_proto" }
+outputs: { field_name: "system_state_proto" }
+outputs: { field_name: "trace_proto" }

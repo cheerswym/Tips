@@ -1,0 +1,25 @@
+similarity_matrix_builder {
+  gates {
+    gate_params { gate_type: TYPE gate_thresholds: 0.5 }
+    gate_params { gate_type: IMG_IOU gate_thresholds: 0.005 }
+    gate_params {
+      gate_type: TYPE_CIRCLE
+      gate_thresholds: 4
+      gate_thresholds: 49
+      gate_thresholds: 49
+    }
+  }
+  metrics {
+    metric_params {
+      metric_type: IMG_IOU
+      metric_weight: 0.0
+      metric_thresholds: 0.5
+    }
+    metric_params {
+      metric_type: IMG_APPEARANCE_FEATURE
+      metric_weight: 1.0
+      metric_thresholds: 0.6
+    }
+  }
+}
+match_solver { solver_algorithm: GNN }

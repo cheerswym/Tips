@@ -1,0 +1,2 @@
+# Lite Cyber Module
+module_class_name: "LiteCyberModule" module_name: LITE_CYBER_MODULE

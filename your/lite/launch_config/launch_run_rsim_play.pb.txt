@@ -1,0 +1,3 @@
+lite_module_config_filenames: "autonomy_module.pb.txt"
+lite_module_config_filenames: "vantage_forwarding_module.pb.txt"
+lite_module_config_filenames: "rsim_module.pb.txt"

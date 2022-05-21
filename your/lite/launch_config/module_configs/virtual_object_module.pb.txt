@@ -1,0 +1,23 @@
+# Virtual object Module
+module_class_name: "VirtualObjectModule"
+module_name: VIRTUAL_OBJECT_MODULE
+inputs: { field_name: "create_virtual_objects_request_proto" }
+inputs: { field_name: "objects_proto" }
+inputs: { field_name: "pose_proto" }
+inputs: { field_name: "remote_assist_to_car_proto" }
+inputs: { field_name: "traffic_light_states_proto" }
+inputs: { field_name: "localization_transform_proto" }
+outputs: { field_name: "depth_maps_proto" }
+outputs: { field_name: "objects_proto" }
+outputs: { field_name: "obstacles_proto" }
+outputs: { field_name: "traffic_light_regions_proto" }
+outputs: { field_name: "traffic_light_states_proto" }
+# system msg
+inputs: { field_name: "system_command_proto" }
+outputs: { field_name: "counter_proto" }
+outputs: { field_name: "execution_issue_proto" }
+outputs: { field_name: "log_proto" }
+outputs: { field_name: "q_events_proto" }
+outputs: { field_name: "system_info_proto" }
+outputs: { field_name: "system_state_proto" }
+outputs: { field_name: "trace_proto" }

@@ -1,0 +1,66 @@
+syntax = "proto2";
+
+package qcraft.tracker.association;
+option go_package = "qcraft-proto.ai/onboard/perception/tracker/association/proto/associator_config";
+
+message GatesProto {
+  enum GateType {
+    CIRCLE = 0;
+    ELIPSE = 1;
+    BEV_IOU = 2;
+    TYPE = 3;
+    SPEED = 4;
+    TYPE_CIRCLE = 5;
+    IMG_IOU = 6;
+  }
+
+  message GateParamProto {
+    optional GateType gate_type = 1;
+    repeated double gate_thresholds = 2;
+  }
+
+  repeated GateParamProto gate_params = 1;
+}
+
+message MetricsProto {
+  enum MetricType {
+    EUCLIDEAN_DIST = 0;
+    RADAR_MAHALANOBIS_DIST = 1;
+    BEV_IOU = 2;
+    ICP = 3;
+    FEATURE = 4;
+    VEHICLE_IOU = 5;
+    P_VALUE = 6;
+    IMG_IOU = 7;
+    IMG_APPEARANCE_FEATURE = 8;
+    CAMERA_TRACKER_ID = 9;
+  }
+
+  message MetricParamProto {
+    optional MetricType metric_type = 1;
+    optional double metric_weight = 2;
+    repeated double metric_thresholds = 3;
+  }
+
+  repeated MetricParamProto metric_params = 1;
+}
+
+message SimilarityMatrixBuilderProto {
+  optional GatesProto gates = 1;
+  optional MetricsProto metrics = 2;
+}
+
+message MatchSolverProto {
+  enum SolverAlgorithm {
+    GNN = 0;
+    KUHN_MUNKRES = 1;
+    GNN_MV1 = 2;
+  }
+
+  optional SolverAlgorithm solver_algorithm = 1;
+}
+
+message AssociationProto {
+  optional SimilarityMatrixBuilderProto similarity_matrix_builder = 1;
+  optional MatchSolverProto match_solver = 2;
+}

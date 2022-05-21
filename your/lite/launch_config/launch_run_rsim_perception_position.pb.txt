@@ -1,0 +1,18 @@
+
+lite_module_config_filenames: "node_state_module.pb.txt"
+lite_module_config_filenames: "node_module.pb.txt"
+
+lite_module_config_filenames: "autonomy_state_module.pb.txt"
+lite_module_config_filenames: "autonomy_module.pb.txt"
+
+lite_module_config_filenames: "vision_module.pb.txt"
+lite_module_config_filenames: "perception_module.pb.txt"
+lite_module_config_filenames: "vantage_forwarding_module.pb.txt"
+lite_module_config_filenames: "tracker_module.pb.txt"
+lite_module_config_filenames: "positioning_module.pb.txt"
+# lite_module_config_filenames: "localization_module.pb.txt"
+
+lite_module_config_filenames: "rsim_playback_module.pb.txt"
+lite_module_config_filenames: "rsim_state_monitor_module.pb.txt"
+
+lite_module_config_filenames: "logging_module.pb.txt"

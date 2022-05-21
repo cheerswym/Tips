@@ -1,0 +1,16 @@
+lite_module_config_filenames: "autonomy_module.pb.txt"
+lite_module_config_filenames: "mock_gnss_imu_driver_module.pb.txt"
+
+module_resource_configs: {
+  module_name: MOCK_GNSS_IMU_DRIVER_MODULE,
+  cpu_core_to_bind: [ 0, 5 ],
+
+  # cpu usage config of the module unit:%.
+  cpu_config: { kickout_deadline: 50, terminate_deadline: 150 }
+
+  # memory config of the module unit:MB.
+  memory_config: { kickout_deadline: 300, terminate_deadline: 2048 }
+
+  # shm memory config of the module.
+  shared_memory_config: { kickout_deadline: 50, terminate_deadline: 500 }
+}

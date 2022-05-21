@@ -1,0 +1,123 @@
+syntax = "proto2";
+
+package qcraft;
+option go_package = "qcraft-proto.ai/onboard/control/proto/controller_conf";
+
+import "onboard/control/proto/controller_msg.proto";
+import "onboard/math/proto/piecewise_linear_function.proto";
+import "onboard/proto/pad_msg.proto";
+
+// TODO(yunchang): deprecated fields to be deleted in the near future:
+// optional bool use_planner_speed_for_table = 1 [deprecated = true];
+// optional double max_acceleration_when_stopped = 5 [deprecated = true];
+// optional double steer_angle_rate = 6 [deprecated = true];
+// optional bool set_steer_limit = 8 [deprecated = true];
+// optional double minimum_speed_resolution = 13 [deprecated = true];
+// optional PkmpcControllerConf pkmpc_controller_conf = 15 [deprecated = true];
+// optional double max_abs_speed_when_stopped = 17 [deprecated = true];
+// optional int32 lpf_cutoff_freq = 20 [deprecated = true];
+// optional bool linear_speed_from_chassis = 25 [deprecated = true];
+// optional PiecewiseLinearFunctionDoubleProto
+//     acceleration_start_comfort_ratio_plf = 31 [deprecated = true];
+
+message ControllerConf {
+  enum ControllerType {
+    // Consist of LAT_SOB_PK_MPC and LON_SOB_PK_MPC.
+    TS_PKMPC_CONTROLLER = 2;
+    // Consist of LAT_TOB_PK_MPC and LON_SOB_PK_MPC.
+    TOB_TSPKMPC_CONTROLLER = 3;
+    // Consist of POLE_PLACEMENT and LON_SOB_PK_MPC.
+    POLE_PLACEMENT_CONTROLLER = 4;
+
+    reserved 1;
+  };
+
+  optional bool use_planner_speed_for_table = 1 [deprecated = true];
+  optional int32 max_pose_miss_num = 2;
+  optional int32 max_chassis_miss_num = 3;
+  optional int32 max_planning_miss_num = 4;
+  optional double max_acceleration_when_stopped = 5 [deprecated = true];
+  optional double steer_angle_rate = 6 [deprecated = true];
+  optional bool enable_gain_scheduler = 7;
+  optional bool set_steer_limit = 8 [deprecated = true];
+
+  optional double control_period = 9;
+  repeated ControllerType active_controllers = 10;
+
+  optional double chassis_period = 11;
+  optional double positioning_period = 12;
+  optional double minimum_speed_resolution = 13 [deprecated = true];
+  optional qcraft.PadMessage.DrivingAction action = 14 [default = START];
+
+  optional PkmpcControllerConf pkmpc_controller_conf = 15 [deprecated = true];
+  optional TsPkmpcControllerConf ts_pkmpc_controller_conf = 16;
+
+  optional double max_abs_speed_when_stopped = 17 [deprecated = true];
+  optional double max_acceleration_cmd = 18;
+  optional double max_deceleration_cmd = 19;
+  optional int32 lpf_cutoff_freq = 20 [deprecated = true];
+  optional double max_lateral_acceleration = 21;  // limit aggressive steering
+  optional double steering_delay_step = 23;
+
+  optional FullStopProto full_stop_condition = 24;
+  optional bool linear_speed_from_chassis = 25 [deprecated = true];
+  optional double accel_ref_cutoff_freq = 26 [deprecated = true];
+  optional double accel_cmd_cutoff_freq = 27 [deprecated = true];
+
+  optional double heading_bias = 28;  // rad.
+
+  optional StateEstimatorSetting state_estimator_setting = 29;
+
+  // Designed particularly for JINLV_MINIBUS, parallel with ibs_brake.
+  optional bool ebrake_enable = 30;
+
+  // Acceleration limit when vehicle is starting to move for the comfort.
+  optional PiecewiseLinearFunctionDoubleProto
+      acceleration_start_comfort_ratio_plf = 31 [deprecated = true];
+  optional bool enable_speed_mode_manager = 32;
+  optional double acc2dec_timer = 33;
+  optional double dec2acc_timer = 34;
+  optional double acc_lowerbound = 35;
+  optional double dec_upperbound = 36;
+  optional double acc_mode_threshold = 37;
+  optional double dec_mode_threshold = 38;
+  optional double hysteresis_zone = 39;
+  optional double polynomial1 = 40;
+  optional double polynomial2 = 41;
+  optional double polynomial3 = 42;
+  optional double polynomial4 = 43;
+  optional double polynomial5 = 44;
+  optional double polynomial6 = 45;
+  optional ClosedLoopAccConfProto closed_loop_acc_conf = 46;
+  optional StandStillProto standstill_condition = 47;
+  optional LatControllerType active_lat_controller = 48;
+  optional LonControllerType active_lon_controller = 49;
+  optional double steer_delay_time = 51;
+  optional BiasEstimationConf bias_estimation_conf = 52;
+  optional SteerDeadZoneAdaptorConf steer_deadzone_adaptor_conf = 53;
+  optional bool enable_hard_brake_limitation = 54;
+
+  // Mrac control config
+  optional MracConfProto mrac_conf = 55;
+
+  optional LatTsPkmpcControllerConf lat_ts_pkmpc_controller_conf = 56;
+  optional LonTsPkmpcControllerConf lon_ts_pkmpc_controller_conf = 57;
+  optional PiecewiseLinearFunctionDoubleProto steering_gain_wrt_speed = 58;
+  optional VehDynamicModelConf veh_dynamic_model_conf = 59;
+  // Acceleration interface type
+  optional AccelerationInterface acceleration_interface = 60;
+  optional PiecewiseLinearFunctionDoubleProto v_pole_plf = 61;
+
+  reserved 22, 50;
+}
+
+// Next ID: 7
+message PkmpcControllerConf {
+  optional double ts = 1;        // sample time (dt) 0.01 now, configurable
+  repeated double matrix_q = 2;  // matrix_q size = 6
+  repeated double matrix_r = 3;  // matrix_r size = 2
+
+  optional GainScheduler position_err_gain_scheduler = 4;
+  optional GainScheduler heading_err_gain_scheduler = 5;
+  optional GainScheduler feedforwardterm_gain_scheduler = 6;
+}

@@ -1,0 +1,41 @@
+lite_module_config_filenames: "autonomy_module.pb.txt"
+lite_module_config_filenames: "node_module.pb.txt"
+lite_module_config_filenames: "node_state_module.pb.txt"
+
+# t0 gnss imu
+lite_module_config_filenames: "gnss_imu_driver_module.pb.txt"
+# t1 positioning
+# lite_module_config_filenames: "localization_module.pb.txt"
+lite_module_config_filenames: "positioning_module.pb.txt"
+# t2 drivers
+lite_module_config_filenames: "image_publisher_module.pb.txt"
+lite_module_config_filenames: "spin_publisher_module.pb.txt"
+lite_module_config_filenames: "radar_publisher_module.pb.txt"
+lite_module_config_filenames: "radar_process_module.pb.txt"
+lite_module_config_filenames: "can_bus_module.pb.txt"
+lite_module_config_filenames: "occ_module.pb.txt"
+lite_module_config_filenames: "sensor_live_module.pb.txt"
+
+# t4 logging
+lite_module_config_filenames: "logging_module.pb.txt"
+
+# Module resource config
+module_resource_configs: {
+  module_name: SPIN_PUBLISHER_MODULE,
+  cpu_core_to_bind: [ 4, 5, 6, 7, 12, 13, 14, 15 ]
+  cpu_config: { kickout_deadline: 150, terminate_deadline: 200 }
+}
+module_resource_configs: {
+  module_name: NODE_STATE_MODULE,
+  cpu_config: { kickout_deadline: 200, terminate_deadline: 400 }
+}
+module_resource_configs: {
+  module_name: IMAGE_PUBLISHER_MODULE,
+  cpu_config: { kickout_deadline: 200, terminate_deadline: 300 }
+  memory_config: { kickout_deadline: 4000, terminate_deadline: 6000 }
+}
+module_resource_configs: {
+  module_name: RADAR_PROCESS_MODULE,
+  cpu_config: { kickout_deadline: 200, terminate_deadline: 300 }
+  memory_config: { kickout_deadline: 4096, terminate_deadline: 6000 }
+}

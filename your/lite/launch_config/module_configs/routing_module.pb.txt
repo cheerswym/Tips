@@ -1,0 +1,31 @@
+# Routing Module
+module_class_name: "RoutingModule"
+module_name: ROUTING_MODULE
+inputs: { field_name: "localization_transform_proto", allow_xnode_input: true }
+inputs: { field_name: "recorded_route_proto" }
+inputs: { field_name: "pose_proto" }
+inputs: { field_name: "remote_assist_to_car_proto" }
+inputs: { field_name: "rerouting_request_proto" }
+inputs: { field_name: "autonomy_state_proto" }
+inputs: { field_name: "driver_action" }
+inputs: { field_name: "q_run_event_states_proto" }
+
+outputs: { field_name: "routing_result_proto" }
+outputs: { field_name: "routing_state_proto" }
+outputs: { field_name: "route_manager_output_proto" }
+outputs: { field_name: "hmi_content_proto" }
+
+# system msg
+inputs: { field_name: "system_command_proto" }
+outputs: { field_name: "counter_proto" }
+outputs: { field_name: "execution_issue_proto" }
+outputs: { field_name: "log_proto" }
+outputs: { field_name: "q_events_proto" }
+outputs: { field_name: "system_info_proto" }
+outputs: { field_name: "system_state_proto" }
+outputs: { field_name: "trace_proto" }
+
+module_startup_exit_priority: 2
+
+# heartbeat config of the module.
+heartbeat_config: { kickout_deadline: 3000000, terminate_deadline: 10000000 }

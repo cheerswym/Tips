@@ -1,0 +1,4 @@
+lite_module_config_filenames: "autonomy_module.pb.txt"
+lite_module_config_filenames: "mock_spin_publisher_module.pb.txt"
+lite_module_config_filenames: "autonomy_hmi_module.pb.txt"
+lite_module_config_filenames: "logging_module.pb.txt"

@@ -1,0 +1,29 @@
+sensor_scenarios: {
+  cameras: CAM_L_FRONT,
+  cameras: CAM_INSIDE_DRIVER,
+  lidars: LDR_FRONT_LEFT,
+  radars: RAD_REAR,
+  scenario: "dbqv2",
+}
+
+sensor_scenarios: {
+  cameras: CAM_R_FRONT_DIM,
+  cameras: CAM_INSIDE_DRIVER,
+  lidars: LDR_FRONT_LEFT_BLIND,
+  lidars: LDR_FRONT_RIGHT_BLIND,
+  scenario: "dbqv4",
+}
+
+sensor_scenarios: {
+  cameras: CAM_PBQ_REAR,
+  cameras: CAM_INSIDE_DRIVER,
+  lidars: LDR_FRONT,
+  radars: RAD_FRONT,
+  radars: RAD_REAR,
+  scenario: "pbqv1",
+}
+
+ignore_checkers: {
+  channel_checks: { channel: "gnss_raw_reading_proto" }
+  scenario: "dbqv3",
+}

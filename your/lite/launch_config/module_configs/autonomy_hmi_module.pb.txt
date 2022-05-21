@@ -1,0 +1,38 @@
+# Autonomy hmi module
+module_class_name: "AutonomyHmiModule"
+module_name: AUTONOMY_HMI_MODULE
+inputs: { field_name: "autonomy_state_proto" }
+inputs: { field_name: "driver_action" }
+inputs: { field_name: "execution_issue_proto" }
+inputs: { field_name: "hmi_content_proto" }
+inputs: { field_name: "remote_assist_to_car_proto" }
+inputs: { field_name: "pose_proto" }
+inputs: { field_name: "localization_transform_proto", allow_xnode_input: true }
+inputs: { field_name: "chassis" }
+inputs: { field_name: "routing_result_proto" }
+inputs: { field_name: "gnss_raw_reading_proto" }
+inputs: { field_name: "q_run_events_proto" }
+inputs: { field_name: "q_product_setting_proto" }
+outputs: { field_name: "audio_record_proto" }
+outputs: { field_name: "driver_action" }
+outputs: { field_name: "remote_assist_to_car_proto" }
+outputs: { field_name: "rerouting_request_proto" }
+outputs: { field_name: "semantic_map_modification_proto" }
+outputs: { field_name: "q_run_events_proto" }
+outputs: { field_name: "q_run_event_states_proto" }
+outputs: { field_name: "q_product_setting_proto" }
+outputs: { field_name: "v2x_proto", channel: "hmi_v2x_proto" }
+# system msg
+inputs: { field_name: "system_command_proto" }
+outputs: { field_name: "counter_proto" }
+outputs: { field_name: "execution_issue_proto" }
+outputs: { field_name: "log_proto" }
+outputs: { field_name: "q_events_proto" }
+outputs: { field_name: "system_info_proto" }
+outputs: { field_name: "system_state_proto" }
+outputs: { field_name: "trace_proto" }
+inputs: { field_name: "remote_assist_status_proto" }
+inputs: { field_name: "v2x_proto" }
+# simulation msg
+
+module_startup_exit_priority: 1

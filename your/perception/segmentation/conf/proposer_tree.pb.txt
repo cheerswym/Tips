@@ -1,0 +1,13 @@
+tree_nodes { name: "PT_FIERY_EYE_NET" parent: "PT_NONE" score: 9 }
+tree_nodes { name: "PT_SEMANTIC_MAP" parent: "PT_FIERY_EYE_NET" score: 9 }
+tree_nodes { name: "PT_LL_NET" parent: "PT_SEMANTIC_MAP" score: 9 }
+tree_nodes { name: "PT_LARGE_VEHICLE" parent: "PT_LL_NET" score: 9 }
+tree_nodes { name: "PT_BLOOMING" parent: "PT_LL_NET" score: 8 }
+tree_nodes { name: "PT_SPLASH" parent: "PT_LL_NET" score: 7 }
+tree_nodes { name: "PT_BARRIER" parent: "PT_LL_NET" score: 6 }
+tree_nodes { name: "PT_CATEYE" parent: "PT_LL_NET" score: 5 }
+tree_nodes { name: "PT_LEAF" parent: "PT_LL_NET" score: 4 }
+tree_nodes { name: "PT_BPEARL_NOISE" parent: "PT_LL_NET" score: 2 }
+tree_nodes { name: "PT_OUSTER_NOISE" parent: "PT_LL_NET" score: 1 }
+tree_nodes { name: "PT_REFLECTION" parent: "PT_BLOOMING" score: 9 }
+tree_nodes { name: "PT_DISTANT_CLUSTER" parent: "PT_REFLECTION" score: 9 }

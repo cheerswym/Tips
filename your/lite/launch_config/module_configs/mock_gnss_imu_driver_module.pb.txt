@@ -1,0 +1,76 @@
+# DO NOT USE IN PROCUTION, FOR MODULE TEST ONLY. 
+module_class_name: "MockGnssImuDriverModule"
+module_name: MOCK_GNSS_IMU_DRIVER_MODULE
+outputs: { field_name: "gnss_raw_reading_proto" }
+outputs: { field_name: "imu_raw_reading_proto" }
+inputs: { field_name: "execution_issue_proto" }
+inputs: { field_name: "shm_message_metadata", channel: "decoded_image" }
+# system msg
+inputs: { field_name: "system_command_proto" }
+inputs: { field_name: "shm_message_metadata", channel: "lidar_spin" }
+outputs: { field_name: "counter_proto" }
+outputs: { field_name: "execution_issue_proto" }
+outputs: { field_name: "log_proto" }
+outputs: { field_name: "q_events_proto" }
+outputs: { field_name: "system_info_proto" }
+outputs: { field_name: "system_state_proto" }
+outputs: { field_name: "trace_proto" }
+outputs: { field_name: "measurements_proto", channel: "radar_measurements" }
+outputs: { field_name: "raw_radar_message_vec_proto" }
+outputs: { field_name: "raw_radar_objects_proto" }
+outputs: { field_name: "pose_proto" }
+
+# Maximum CPU usage of the module.
+max_cpu_usage: 20
+
+# Maximum memory usage of the module.
+max_memory_usage_kb: 100000
+
+# channel checker config
+checkers: {
+  field_name: "gnss_raw_reading_proto",
+  min_frequency: 10,
+  max_frequency: 10,
+  critical: true,
+}
+
+# channel checker config
+checkers: {
+  field_name: "test_channel_checker_proto",
+  min_frequency: 10,
+  max_frequency: 10,
+}
+
+# checkers: {
+#   field_name: "raw_radar_message_vec_proto",
+#   sensor_id: "RAD_FRONT",
+#   min_frequency: 10,
+#   max_frequency: 10
+# }
+# checkers: {
+#   field_name: "raw_radar_message_vec_proto",
+#   sensor_id: "RAD_REAR",
+#   min_frequency: 10,
+#   max_frequency: 10
+# }
+# checkers: {
+#   field_name: "raw_radar_objects_proto",
+#   sensor_id: "RAD_FRONT",
+#   min_frequency: 10,
+#   max_frequency: 10
+# }
+# checkers: {
+#   field_name: "raw_radar_objects_proto",
+#   sensor_id: "RAD_REAR",
+#   min_frequency: 10,
+#   max_frequency: 10
+# }
+
+# module startup exit priority
+module_startup_exit_priority: 3
+
+# heartbeat config of the module unit:us.
+heartbeat_config: { kickout_deadline: 500000, terminate_deadline: 5000000 }
+
+# shutdown.
+module_restart_times: 0

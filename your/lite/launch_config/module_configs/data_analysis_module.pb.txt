@@ -1,0 +1,7 @@
+module_class_name: "DataAnalysisModule"
+module_name: DATA_ANALYSIS_MODULE
+inputs: { field_name: "chassis_detail" }
+inputs: { field_name: "chassis" }
+inputs: { field_name: "obstacles_proto" }
+inputs: { field_name: "pose_proto" }
+inputs: { field_name: "vehicle_control_status_proto" }

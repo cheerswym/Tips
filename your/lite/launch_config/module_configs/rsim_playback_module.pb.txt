@@ -1,0 +1,31 @@
+module_class_name: "RsimPlaybackModule"
+module_name: RSIM_PLAYBACK_MODULE
+outputs: { field_name: "depth_maps_proto" }
+outputs: { field_name: "execution_issue_proto" }
+outputs: { field_name: "fen_detections_proto" }
+outputs: { field_name: "measurements_proto" }
+outputs: { field_name: "objects_proto" }
+outputs: { field_name: "obstacles_proto" }
+outputs: { field_name: "points_in_image_proto" }
+outputs: { field_name: "pose_correction_proto" }
+outputs: { field_name: "cluster_filter_debug_proto" }
+outputs: { field_name: "segments_in_image_proto" }
+outputs: { field_name: "tracker_debug_proto" }
+outputs: { field_name: "traffic_light_regions_proto" }
+outputs: { field_name: "traffic_light_states_proto" }
+outputs: { field_name: "pcn_regions_proto" }
+outputs: { field_name: "pose_correction_debug_proto" }
+outputs: { field_name: "shm_message_metadata", channel: "lidar_spin" }
+outputs: { field_name: "shm_message_metadata", channel: "encoded_lidar_frame" }
+outputs: { field_name: "gnss_raw_reading_proto" }
+
+# system msg
+inputs: { field_name: "system_command_proto" }
+inputs: { field_name: "autonomy_state_proto" }
+outputs: { field_name: "system_state_proto" }
+
+outputs: { field_name: "rsim_stop_proto" }
+cpu_config: { kickout_deadline: 300, terminate_deadline: 400 }
+
+module_restart_times: 0
+module_startup_exit_priority: 1

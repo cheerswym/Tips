@@ -1,0 +1,15 @@
+# Vehicle Engine Module
+module_class_name: "VehicleEngineModule"
+module_name: VEHICLE_ENGINE_MODULE
+outputs: { field_name: "gnss_raw_reading_proto" }
+outputs: { field_name: "imu_raw_reading_proto" }
+outputs: { field_name: "pose_proto", channel: "vehicle_engine_pose_proto" }
+# system msg
+outputs: { field_name: "counter_proto" }
+outputs: { field_name: "execution_issue_proto" }
+outputs: { field_name: "log_proto" }
+outputs: { field_name: "q_events_proto" }
+outputs: { field_name: "system_info_proto" }
+outputs: { field_name: "trace_proto" }
+
+module_startup_exit_priority: 6

@@ -1,0 +1,13 @@
+# Online Simulation Module 
+module_class_name: "OnlineSimulationModule"
+module_name: ONLINE_SIMULATION_MODULE
+inputs: { field_name: "pose_proto" }
+outputs: { field_name: "depth_maps_proto" }
+outputs: { field_name: "execution_issue_proto" }
+outputs: { field_name: "objects_proto" }
+outputs: { field_name: "obstacles_proto" }
+outputs: { field_name: "traffic_light_regions_proto" }
+outputs: { field_name: "traffic_light_states_proto" }
+# system event
+outputs: { field_name: "system_state_proto" }
+inputs: { field_name: "system_command_proto" }

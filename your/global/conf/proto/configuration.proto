@@ -1,0 +1,19 @@
+syntax = "proto2";
+
+package qcraft;
+option go_package = "qcraft-proto.ai/onboard/global/conf/proto/configuration";
+
+import "onboard/positioning/imu/proto/imu_device_param.proto";
+import "onboard/positioning/gnss/proto/gnss_device_param.proto";
+
+message ConfigurationProto {
+  oneof imu_device_param_oneof {
+    ImuDeviceParamProto imu_device_param = 1;
+    string imu_device_param_file = 2;
+  }
+
+  oneof gnss_device_param_oneof {
+    GnssDeviceParamProto gnss_device_param = 3;
+    string gnss_device_param_file = 4;
+  }
+}

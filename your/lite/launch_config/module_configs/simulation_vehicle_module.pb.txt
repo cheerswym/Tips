@@ -1,0 +1,25 @@
+# Simulation Vehicle Module
+module_class_name: "SimulationVehicleModule"
+module_name: SIMULATION_VEHICLE_MODULE
+inputs: { field_name: "control_command" }
+inputs: { field_name: "guardian_cmd_proto" }
+inputs: { field_name: "localization_transform_proto" }
+inputs: { field_name: "joy_stick_proto" }
+inputs: { field_name: "pose_proto", channel: "sensor_pose" }
+inputs: { field_name: "chassis", channel: "shadow_chassis" }
+outputs: { field_name: "chassis" }
+outputs: { field_name: "driver_action" }
+outputs: { field_name: "gnss_raw_reading_proto" }
+outputs: { field_name: "imu_raw_reading_proto" }
+outputs: { field_name: "pose_proto" }
+# system msg
+inputs: { field_name: "system_command_proto" }
+outputs: { field_name: "counter_proto" }
+outputs: { field_name: "execution_issue_proto" }
+outputs: { field_name: "log_proto" }
+outputs: { field_name: "q_events_proto" }
+outputs: { field_name: "system_info_proto" }
+outputs: { field_name: "system_state_proto" }
+outputs: { field_name: "trace_proto" }
+# Only outputs in simulation.
+outputs: { field_name: "chassis", channel: "shadow_chassis" }

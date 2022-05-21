@@ -1,0 +1,64 @@
+# Planner Module
+module_class_name: "PlannerModule"
+module_name: PLANNER_MODULE
+inputs: { field_name: "autonomy_state_proto" }
+inputs: { field_name: "chassis" }
+inputs: { field_name: "driver_action" }
+inputs: { field_name: "localization_transform_proto", allow_xnode_input: true }
+inputs: { field_name: "objects_proto", max_interval: 0.3 }
+inputs: { field_name: "obstacles_proto", max_interval: 0.3 }
+inputs: { field_name: "pose_proto" }
+inputs: { field_name: "remote_assist_to_car_proto" }
+inputs: { field_name: "rerouting_request_proto" }
+inputs: { field_name: "routing_result_proto" }
+inputs: { field_name: "route_manager_output_proto" }
+inputs: { field_name: "traffic_light_states_proto" }
+inputs: { field_name: "recorded_route_proto" }
+inputs: { field_name: "semantic_map_modification_proto" }
+inputs: { field_name: "sensor_fovs_proto" }
+outputs: { field_name: "charts_data_proto" }
+outputs: { field_name: "execution_issue_proto" }
+outputs: { field_name: "objects_prediction_proto" }
+outputs: { field_name: "planner_debug_proto" }
+outputs: { field_name: "planner_routing_request_proto" }
+outputs: { field_name: "rerouting_request_proto" }
+outputs: { field_name: "trajectory_proto" }
+outputs: { field_name: "planner_teleop_status_proto" }
+outputs: { field_name: "yielding_states_proto" }
+outputs: { field_name: "prediction_debug_proto" }
+# system msg
+inputs: { field_name: "system_command_proto" }
+outputs: { field_name: "counter_proto" }
+outputs: { field_name: "system_info_proto" }
+outputs: { field_name: "execution_issue_proto" }
+outputs: { field_name: "log_proto" }
+outputs: { field_name: "q_events_proto" }
+outputs: { field_name: "system_state_proto" }
+outputs: { field_name: "trace_proto" }
+outputs: { field_name: "hmi_content_proto" }
+outputs: { field_name: "canvas_buffers_proto" }
+outputs: { field_name: "planner_state_proto" }
+outputs: { field_name: "route_manager_output_proto" }
+# channel checker config
+checkers: {
+  field_name: "objects_prediction_proto",
+  min_frequency: 4,
+  max_frequency: 15
+}
+checkers: {
+  field_name: "trajectory_proto",
+  min_frequency: 4,
+  max_frequency: 15
+}
+
+# Only in simulation.
+inputs: {
+  field_name: "planner_state_proto",
+  channel: "log_planner_state_proto"
+}
+inputs: {
+  field_name: "objects_prediction_proto",
+  channel: "oracle_objects_prediction_proto"
+}
+inputs: { field_name: "trajectory_proto", channel: "oracle_trajectory_proto" }
+module_startup_exit_priority: 3

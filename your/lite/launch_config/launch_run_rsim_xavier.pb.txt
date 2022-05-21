@@ -1,0 +1,3 @@
+lite_module_config_filenames: "autonomy_module.pb.txt"
+lite_module_config_filenames: "node_module.pb.txt"
+lite_module_config_filenames: "node_state_module.pb.txt"

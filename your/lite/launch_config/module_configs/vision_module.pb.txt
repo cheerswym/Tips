@@ -1,0 +1,43 @@
+# Vision Module
+module_class_name: "VisionModule"
+module_name: VISION_MODULE
+inputs: { field_name: "lidar_host_time_diff_proto" }
+inputs: { field_name: "localization_transform_proto", allow_xnode_input: true }
+inputs: { field_name: "pose_correction_proto" }
+inputs: { field_name: "pose_proto" }  # Onboard only
+inputs: { field_name: "shm_message_metadata", channel: "decoded_image" }
+inputs: { field_name: "shm_message_metadata", channel: "lidar_spin" }
+outputs: { field_name: "execution_issue_proto" }
+outputs: { field_name: "semantic_segmentation_results_proto" }
+outputs: { field_name: "traffic_light_regions_proto" }
+outputs: { field_name: "traffic_light_states_proto" }
+outputs: { field_name: "depth_estimation_results_proto" }
+outputs: { field_name: "multi_camera_mono3d_measurements_proto" }
+outputs: { field_name: "multi_camera_lanes_proto" }
+outputs: { field_name: "measurements_proto", channel: "camera_measurements" }
+outputs: {
+  field_name: "measurements_proto",
+  channel: "single_camera_tracker_measurements"
+}
+
+# system msg
+inputs: { field_name: "system_command_proto" }
+outputs: { field_name: "counter_proto" }
+outputs: { field_name: "execution_issue_proto" }
+outputs: { field_name: "log_proto" }
+outputs: { field_name: "q_events_proto" }
+outputs: { field_name: "system_info_proto" }
+outputs: { field_name: "system_state_proto" }
+outputs: { field_name: "trace_proto" }
+# Follow message are for offboard only.
+inputs: { field_name: "pose_proto", channel: "sensor_pose" }  # Simulation only
+# channel checker config
+checkers: {
+  field_name: "semantic_segmentation_results_proto",
+  min_frequency: 10,
+  max_frequency: 100,
+  frame_window_size: 20
+}
+
+module_startup_exit_priority: 2
+module_restart_times: 1

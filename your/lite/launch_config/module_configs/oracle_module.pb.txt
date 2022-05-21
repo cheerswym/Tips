@@ -1,0 +1,9 @@
+# Localization Module
+module_class_name: "OracleModule"
+module_name: ORACLE_MODULE
+# Only outputs in simulation.
+outputs: { field_name: "trajectory_proto", channel: "oracle_trajectory_proto" }
+outputs: {
+  field_name: "objects_prediction_proto",
+  channel: "oracle_objects_prediction_proto"
+}

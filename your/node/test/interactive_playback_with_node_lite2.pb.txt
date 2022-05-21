@@ -1,0 +1,17 @@
+nodes_scheme_name: "interactive_playback_with_node_lite2"
+nodes {
+  node_name: "node_server"
+  name_space: "pc"
+  node_ip: "172.18.2.112"
+  node_port: "50070"
+  lite_launch_config_filename: "launch_run_interactive_playback_with_node_server_2.pb.txt"
+  timeout: 50
+}
+nodes {
+  node_name: "node_client"
+  name_space: "pc"
+  node_ip: "172.18.2.100"
+  node_port: "50080"
+  lite_launch_config_filename: "launch_run_interactive_playback_with_node_client_2.pb.txt"
+  timeout: 50
+}

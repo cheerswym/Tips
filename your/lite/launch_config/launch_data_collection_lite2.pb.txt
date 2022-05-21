@@ -1,0 +1,24 @@
+# Data Collection
+lite_module_config_filenames: "autonomy_module.pb.txt"
+lite_module_config_filenames: "node_module.pb.txt"
+lite_module_config_filenames: "node_state_module.pb.txt"
+# t0 gnss imu
+lite_module_config_filenames: "gnss_imu_driver_module.pb.txt"
+# t1 positioning
+lite_module_config_filenames: "positioning_module.pb.txt"
+lite_module_config_filenames: "localization_module.pb.txt"
+# t2 drivers
+lite_module_config_filenames: "spin_publisher_module.pb.txt"
+lite_module_config_filenames: "image_publisher_module.pb.txt"
+lite_module_config_filenames: "can_bus_module.pb.txt"
+lite_module_config_filenames: "radar_publisher_module.pb.txt"
+lite_module_config_filenames: "radar_process_module.pb.txt"
+# t3 application
+lite_module_config_filenames: "perception_module.pb.txt"
+lite_module_config_filenames: "vision_module.pb.txt"
+lite_module_config_filenames: "tracker_module.pb.txt"
+lite_module_config_filenames: "vantage_forwarding_module.pb.txt"
+lite_module_config_filenames: "autonomy_state_module.pb.txt"
+lite_module_config_filenames: "autonomy_hmi_module.pb.txt"
+# t4 logging
+lite_module_config_filenames: "logging_module.pb.txt"

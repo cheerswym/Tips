@@ -1,0 +1,8 @@
+# Virtual World Module
+module_class_name: "VirtualWorldModule"
+module_name: VIRTUAL_WORLD_MODULE
+inputs: { field_name: "pose_proto", channel: "vehicle_engine_pose_proto" }
+inputs: { field_name: "pose_proto" }
+# system msg
+outputs: { field_name: "trace_proto" }
+outputs: { field_name: "execution_issue_proto" }

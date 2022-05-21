@@ -1,0 +1,30 @@
+# Vantage forwarding Module
+module_class_name: "VantageForwardingModule"
+module_name: VANTAGE_FORWARDING_MODULE
+inputs: { field_name: "chassis" }
+inputs: { field_name: "label_frame_proto" }
+inputs: { field_name: "localization_transform_proto", allow_xnode_input: true }
+inputs: { field_name: "objects_proto" }
+inputs: { field_name: "obstacles_proto" }
+inputs: { field_name: "pose_proto" }
+inputs: { field_name: "pose_proto", channel: "stf_pose_proto" }
+inputs: { field_name: "shm_message_metadata", channel: "encoded_image" }
+inputs: { field_name: "shm_message_metadata", channel: "encoded_lidar_frame" }
+inputs: { field_name: "trajectory_proto" }
+inputs: { field_name: "vehicle_control_status_proto" }
+inputs: { field_name: "vehicle_control_status_proto" }
+inputs: { field_name: "remote_assist_status_proto" }
+inputs: { field_name: "range_images_proto" }
+inputs: { field_name: "segmentation_objects_proto" }
+inputs: { field_name: "update_run_params_proto" }
+# system msg
+inputs: { field_name: "system_command_proto" }
+outputs: { field_name: "counter_proto" }
+outputs: { field_name: "execution_issue_proto" }
+outputs: { field_name: "log_proto" }
+outputs: { field_name: "q_events_proto" }
+outputs: { field_name: "system_info_proto" }
+outputs: { field_name: "system_state_proto" }
+outputs: { field_name: "trace_proto" }
+
+module_startup_exit_priority: 1

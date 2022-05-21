@@ -1,0 +1,21 @@
+# Realtime playback module
+module_class_name: "RealTimePlaybackModule"
+module_name: REAL_TIME_PLAYBACK_MODULE
+outputs: { field_name: "can_driver_debug_proto" }
+outputs: { field_name: "gnss_imu_driver_debug_proto" }
+outputs: { field_name: "gnss_raw_reading_proto" }
+outputs: { field_name: "imu_raw_reading_proto" }
+outputs: { field_name: "localization_transform_proto" }
+outputs: { field_name: "pose_proto", channel: "gnss_pose_proto" }
+outputs: { field_name: "pose_proto" }
+outputs: { field_name: "shm_message_metadata", channel: "decoded_image" }
+outputs: { field_name: "shm_message_metadata", channel: "encoded_image" }
+outputs: { field_name: "shm_message_metadata", channel: "lidar_spin" }
+outputs: { field_name: "vehicle_control_status_proto" }
+outputs: { field_name: "vehicle_operation_status_proto" }
+outputs: { field_name: "counter_proto" }
+outputs: { field_name: "q_events_proto" }
+outputs: { field_name: "system_info_proto" }
+outputs: { field_name: "log_proto" }
+# ... publish everything, it's ok to not list all of them out, since this
+# module is only run offboard.

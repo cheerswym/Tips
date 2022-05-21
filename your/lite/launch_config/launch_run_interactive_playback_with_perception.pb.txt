@@ -1,0 +1,8 @@
+# Launch run config
+lite_module_config_filenames: "vantage_forwarding_module.pb.txt"
+lite_module_config_filenames: "perception_module.pb.txt"
+lite_module_config_filenames: "qview_publisher_module.pb.txt"
+lite_module_config_filenames: "vision_module.pb.txt"
+lite_module_config_filenames: "tracker_module.pb.txt"
+lite_module_config_filenames: "interactive_playback.pb.txt"
+lite_module_config_filenames: "radar_process_module.pb.txt"

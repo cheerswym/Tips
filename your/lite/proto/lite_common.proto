@@ -1,0 +1,148 @@
+syntax = "proto2";
+
+package qcraft;
+option go_package = "qcraft-proto.ai/onboard/lite/proto/lite_common";
+
+// The header of a lite message, all lite message should contain this message
+// as first field of message.
+message LiteHeader {
+  // Timestamp in microseconds.
+  optional int64 timestamp = 1;
+  // The domain of lite message lives in, empty means default namespace.
+  optional string domain = 2;
+  // The increasing sequence number published by a client.
+  optional uint64 seq_number = 3;
+  // The integer format of LiteModuleName, not use LiteModuleName directly here
+  // to decouple with the message definition.
+  optional int32 module_id = 4;
+  // Empty means using the Proto's lower case with underscore form.
+  // Eg: TrajectoryProto -> trajectory_proto. If non empty, use this field
+  // instead.
+  optional string channel = 5;
+
+  // If it's a share memory message.
+  optional bool is_shm_msg = 6;
+
+  // The tag number in LiteMsgWrapper proto.
+  optional int32 tag_number = 7;
+
+  // The timestamp that msg reach the logger.
+  // Note: This field will be set on the LoggingModule.
+  // Other modules should not read this field (since it is not set).
+  optional int64 log_timestamp = 8;
+
+  optional string full_node_name = 9;
+
+  // The domain of lite message lives in, empty means default namespace.
+  // TODO(kun): Maybe add pid.
+  extensions 10000 to max;
+}
+
+// In lite system every client should be published from a Module name.
+enum LiteModuleName {
+  UNSPECIFIED_MODULE = 0;
+  // Onboard modules start from 1 to 50000
+  PLANNER_MODULE = 1;
+  PERCEPTION_MODULE = 2;
+  SPIN_PUBLISHER_MODULE = 3;
+  LOGGING_MODULE = 4;
+  PCAP_FILE_PUBLISHER_MODULE = 5;
+  VANTAGE_FORWARDING_MODULE = 6;
+  GNSS_IMU_DRIVER_MODULE = 7;
+  POSITIONING_MODULE = 8;
+  VEHICLE_ENGINE_MODULE = 9;
+  VIRTUAL_WORLD_MODULE = 10;
+  VEHICLE_CONTROL_MODULE = 11;
+  IMAGE_PUBLISHER_MODULE = 12;
+  CAN_BUS_MODULE = 13;
+  AUTONOMY_STATE_MODULE = 15;
+  PREDICTION_MODULE = 16;
+  ONLINE_SIMULATION_MODULE = 17;
+  REMOTE_ASSIST_MODULE = 18;
+  VISION_MODULE = 19;
+  ROUTING_MODULE = 20;
+  ROUTE_RECORDER_MODULE = 21;
+  QVIEW_PUBLISHER_MODULE = 22;
+  AUTONOMY_MODULE = 23;
+  V2X_MODULE = 24;
+  LOCALIZATION_MODULE = 25;
+  RADAR_PUBLISHER_MODULE = 26;
+  QSHOW_PUBLISHER_MODULE = 27;
+  IMAGE_FORWARDING_MODULE = 28;
+  NODE_MODULE = 29;
+  NODE_STATE_MODULE = 30;
+  IMAGE_SENDER_MODULE = 31;
+  RADAR_PROCESS_MODULE = 32;
+  TRACKER_MODULE = 33;
+  AUTONOMY_HMI_MODULE = 34;
+  OCC_MODULE = 35;
+  EMERGENCY_BRAKE_MODULE = 36;
+  // Prepare the environment and system self-check
+  SYSTEM_CHECK_MODULE = 37;
+  CONTROL_CALIBRATION_MODULE = 38;
+
+  // Offline modules start from  50000 to 99999
+  SIM_RUN_PLAYBACK_MODULE = 50000;
+  REAL_TIME_PLAYBACK_MODULE = 50001;
+  INTERACTIVE_PLAYBACK_MODULE = 50002;
+  DATA_ANALYSIS_MODULE = 50003;
+  SIMULATION_VEHICLE_MODULE = 50004;
+  VIRTUAL_OBJECT_MODULE = 50005;
+  CREATE_SIM_MESSAGES_MODULE = 50006;
+  JOYSTICK_CONTROL_MODULE = 50007;
+  SYNTHESIZED_TRAFFIC_FLOW_MODULE = 50008;
+  RSIM_MODULE = 50009;
+  SENSOR_LIVE_MODULE = 50010;
+  MOCK_LOCALIZATION_MODULE = 50011;
+  LITE_CYBER_MODULE = 50012;
+  ORACLE_MODULE = 50013;
+  CYBER_FORWARDING_MODULE = 50014;
+  OFFBOARD_PREDICTION_MODULE = 50015;
+
+  // Test only modules, start from 100000
+  TEST_LITE_MODULE_1 = 100000;
+  TEST_LITE_MODULE_2 = 100001;
+  TEST_LITE_MODULE_3 = 100002;
+  TEST_LITE_MODULE_4 = 100003;
+  TEST_LITE_MODULE_5 = 100004;
+  TEST_LITE_MODULE_6 = 100005;
+
+  MOCK_GNSS_IMU_DRIVER_MODULE = 100010;
+  MOCK_POSITIONING_MODULE = 100011;
+  MOCK_PERCEPTION_MODULE = 100012;
+  MOCK_SPIN_PUBLISHER_MODULE = 100013;
+  MOCK_PLANNER_MODULE = 100014;
+  MOCK_LOGGING_MODULE = 100015;
+  TEST_MODULE_STATE_MODULE = 100016;
+  MOCK_IMAGE_PUBLISH_MODULE = 100017;
+  MOCK_SELF_DESTRUCT_MODULE = 100018;
+  MOCK_LITE_PRESSURE_TEST_MODULE = 100019;
+
+  RSIM_PLAYBACK_MODULE = 100020;
+  RSIM_VEHICLE_MODULE = 100021;
+  MOCK_MINILITE_MODULE = 100022;
+  RSIM_STATE_MONITOR_MODULE = 100023;
+  MOCK_PUB_SUB_MODULE = 100024;
+
+  // QIssue module
+  QISSUE_TRANS = 100025;
+
+  // lite perfomance test moudle
+  LITE_PERF_TEST_PUB_SUB_MODULE = 100026;
+  LITE_PERF_TEST_SUB_MODULE = 100027;
+
+  // Reserved for oneoff usage > 200000
+
+  reserved 14;
+}
+
+// An configuration can be specified in simulation per module.
+message SimModuleConf {
+  extensions 10000 to max;
+}
+
+// Module state channel pairs for state message forwarding
+message ModuleStateChannelPair {
+  optional string source_channel = 1;
+  optional string target_channel = 2;
+}

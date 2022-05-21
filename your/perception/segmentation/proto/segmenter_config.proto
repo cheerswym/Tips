@@ -1,0 +1,14 @@
+syntax = "proto2";
+
+package qcraft.segmentation;
+option go_package = "qcraft.ai/onboard/perception/segmentation/proto/segmenter_config";
+
+message TreeNodeProto {
+  optional string name = 1;
+  optional string parent = 2;
+  optional int32 score = 3;
+}
+
+message TreeNodesProto {
+  repeated TreeNodeProto tree_nodes = 1;
+}

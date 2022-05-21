@@ -1,0 +1,24 @@
+# prediction_feature_extraction Module
+module_class_name: "OffboardPredictionModule"
+module_name: OFFBOARD_PREDICTION_MODULE
+
+outputs: { field_name: "prediction_debug_proto" }
+
+# Only in simulation.
+inputs: { field_name: "localization_transform_proto", allow_xnode_input: true }
+inputs: {
+  field_name: "objects_prediction_proto",
+  channel: "oracle_objects_prediction_proto"
+}
+inputs: { field_name: "objects_proto", max_interval: 0.3 }
+inputs: { field_name: "pose_proto" }
+inputs: { field_name: "traffic_light_states_proto" }
+inputs: { field_name: "trajectory_proto", channel: "oracle_trajectory_proto" }
+
+module_startup_exit_priority: 3
+
+# cpu usage config of the module unit:%.
+cpu_config: { kickout_deadline: 400, terminate_deadline: 600 }
+
+# memory config of the module unit:MB.
+memory_config: { kickout_deadline: 6000, terminate_deadline: 8000 }

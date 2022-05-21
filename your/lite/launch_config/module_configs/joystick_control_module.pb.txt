@@ -1,0 +1,16 @@
+# Joystick Control Module
+module_class_name: "JoystickControlModule"
+module_name: JOYSTICK_CONTROL_MODULE
+inputs: { field_name: "chassis_detail" }
+inputs: { field_name: "chassis" }
+inputs: { field_name: "vehicle_control_status_proto" }
+outputs: { field_name: "control_command" }
+# system msg
+inputs: { field_name: "system_command_proto" }
+outputs: { field_name: "counter_proto" }
+outputs: { field_name: "execution_issue_proto" }
+outputs: { field_name: "log_proto" }
+outputs: { field_name: "q_events_proto" }
+outputs: { field_name: "system_info_proto" }
+outputs: { field_name: "system_state_proto" }
+outputs: { field_name: "trace_proto" }

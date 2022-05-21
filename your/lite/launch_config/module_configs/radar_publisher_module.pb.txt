@@ -1,0 +1,54 @@
+module_class_name: "RadarPublisherModule"
+module_name: RADAR_PUBLISHER_MODULE
+inputs: { field_name: "gnss_raw_reading_proto" }
+inputs: { field_name: "pose_proto" }
+# Start of only used in simulation.
+inputs: { field_name: "pose_proto", channel: "sensor_pose" }
+inputs: {
+  field_name: "raw_radar_message_vec_proto",
+  channel: "raw_radar_message_vec_proto_log"
+}
+
+outputs: { field_name: "raw_radar_message_vec_proto" }
+outputs: { field_name: "raw_radar_objects_proto" }
+# system msg
+inputs: { field_name: "system_command_proto" }
+outputs: { field_name: "counter_proto" }
+outputs: { field_name: "execution_issue_proto" }
+outputs: { field_name: "log_proto" }
+outputs: { field_name: "q_events_proto" }
+outputs: { field_name: "system_info_proto" }
+outputs: { field_name: "system_state_proto" }
+outputs: { field_name: "trace_proto" }
+# channel checker config
+checkers: {
+  field_name: "raw_radar_message_vec_proto",
+  sensor_id: "RAD_FRONT",
+  min_frequency: 40,
+  max_frequency: 60,
+  frame_window_size: 50
+}
+checkers: {
+  field_name: "raw_radar_message_vec_proto",
+  sensor_id: "RAD_REAR",
+  min_frequency: 40,
+  max_frequency: 60,
+  frame_window_size: 50
+}
+
+checkers: {
+  field_name: "raw_radar_objects_proto",
+  sensor_id: "RAD_FRONT",
+  min_frequency: 8,
+  max_frequency: 15,
+  frame_window_size: 15
+}
+checkers: {
+  field_name: "raw_radar_objects_proto",
+  sensor_id: "RAD_REAR",
+  min_frequency: 8,
+  max_frequency: 15,
+  frame_window_size: 15
+}
+
+module_startup_exit_priority: 2

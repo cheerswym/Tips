@@ -1,0 +1,8 @@
+# Launch run config
+lite_module_config_filenames: "autonomy_module.pb.txt"
+# lite_module_config_filenames: "autonomy_state_module.pb.txt"
+lite_module_config_filenames: "vantage_forwarding_module.pb.txt"
+lite_module_config_filenames: "autonomy_hmi_module.pb.txt"
+lite_module_config_filenames: "qview_publisher_module.pb.txt"
+lite_module_config_filenames: "interactive_playback.pb.txt"
+lite_module_config_filenames: "v2x_module.pb.txt"

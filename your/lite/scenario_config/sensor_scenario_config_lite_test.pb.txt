@@ -1,0 +1,15 @@
+sensor_scenarios: {
+  # cameras: CAM_L_FRONT,
+  cameras: CAM_L_FRONT_LEFT,
+  # lidars: LDR_FRONT_LEFT,
+  lidars: LDR_FRONT_RIGHT,
+  # radars: RAD_FRONT,
+  radars: RAD_REAR,
+
+  scenario: "dbqv3",
+}
+
+ignore_checkers: {
+  channel_checks: { channel: "test_channel_checker_proto" }
+  scenario: "dbqv3",
+}

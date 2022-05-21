@@ -1,0 +1,27 @@
+module_class_name: "RemoteAssistModule"
+module_name: REMOTE_ASSIST_MODULE
+inputs: { field_name: "chassis" }
+inputs: { field_name: "objects_proto" }
+inputs: { field_name: "control_command" }
+inputs: { field_name: "pose_proto" }
+inputs: { field_name: "shm_message_metadata", channel: "encoded_image" }
+inputs: { field_name: "planner_debug_proto" }
+inputs: { field_name: "autonomy_state_proto" }
+inputs: { field_name: "trajectory_proto" }
+inputs: { field_name: "planner_teleop_status_proto" }
+inputs: { field_name: "localization_transform_proto", allow_xnode_input: true }
+outputs: { field_name: "car_to_remote_assist_proto" }
+outputs: { field_name: "remote_assist_to_car_proto" }
+outputs: { field_name: "remote_assist_status_proto" }
+outputs: { field_name: "joy_stick_proto" }
+# system msg
+inputs: { field_name: "system_command_proto" }
+outputs: { field_name: "counter_proto" }
+outputs: { field_name: "execution_issue_proto" }
+outputs: { field_name: "log_proto" }
+outputs: { field_name: "q_events_proto" }
+outputs: { field_name: "system_info_proto" }
+outputs: { field_name: "system_state_proto" }
+outputs: { field_name: "trace_proto" }
+
+module_startup_exit_priority: 1

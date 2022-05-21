@@ -1,0 +1,2 @@
+lite_module_config_filenames: "can_bus_module.pb.txt"
+lite_module_config_filenames: "joystick_control_module.pb.txt"

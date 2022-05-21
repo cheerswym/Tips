@@ -1,0 +1,104 @@
+lite_module_config_filenames: "autonomy_module.pb.txt"
+lite_module_config_filenames: "node_module.pb.txt"
+lite_module_config_filenames: "node_state_module.pb.txt"
+# t0 gnss imu
+lite_module_config_filenames: "gnss_imu_driver_module.pb.txt"
+# t1 positioning
+lite_module_config_filenames: "localization_module.pb.txt"
+lite_module_config_filenames: "positioning_module.pb.txt"
+# t2 drivers
+lite_module_config_filenames: "image_publisher_module.pb.txt"
+lite_module_config_filenames: "image_sender_module.pb.txt"
+lite_module_config_filenames: "spin_publisher_module.pb.txt"
+lite_module_config_filenames: "radar_publisher_module.pb.txt"
+lite_module_config_filenames: "radar_process_module.pb.txt"
+lite_module_config_filenames: "can_bus_module.pb.txt"
+lite_module_config_filenames: "occ_module.pb.txt"
+# t3 application
+lite_module_config_filenames: "perception_module.pb.txt"
+lite_module_config_filenames: "vision_module.pb.txt"
+lite_module_config_filenames: "tracker_module.pb.txt"
+lite_module_config_filenames: "planner_module.pb.txt"
+lite_module_config_filenames: "vehicle_control_module.pb.txt"
+lite_module_config_filenames: "autonomy_state_module.pb.txt"
+lite_module_config_filenames: "autonomy_hmi_module.pb.txt"
+lite_module_config_filenames: "vantage_forwarding_module.pb.txt"
+lite_module_config_filenames: "remote_assist_module.pb.txt"
+lite_module_config_filenames: "routing_module.pb.txt"
+lite_module_config_filenames: "route_recorder_module.pb.txt"
+lite_module_config_filenames: "v2x_module.pb.txt"
+lite_module_config_filenames: "qview_publisher_module.pb.txt"
+# t4 logging
+lite_module_config_filenames: "logging_module.pb.txt"
+
+# Module resource config
+module_resource_configs: {
+  module_name: VANTAGE_FORWARDING_MODULE,
+  cpu_core_to_bind: [ 14, 15 ]
+}
+module_resource_configs: {
+  module_name: LOGGING_MODULE,
+  cpu_core_to_bind: [ 14, 15 ]
+}
+module_resource_configs: {
+  module_name: NODE_MODULE,
+  cpu_core_to_bind: [ 14, 15 ]
+}
+module_resource_configs: {
+  module_name: SPIN_PUBLISHER_MODULE,
+  cpu_core_to_bind: [ 4, 5, 6, 7, 12, 13, 14, 15 ]
+  cpu_config: { kickout_deadline: 150, terminate_deadline: 200 }
+}
+module_resource_configs: {
+  module_name: NODE_STATE_MODULE,
+  cpu_config: { kickout_deadline: 200, terminate_deadline: 400 }
+}
+module_resource_configs: {
+  module_name: LOCALIZATION_MODULE,
+  cpu_config: { kickout_deadline: 200, terminate_deadline: 400 }
+  memory_config: { kickout_deadline: 3000, terminate_deadline: 6000 }
+}
+module_resource_configs: {
+  module_name: IMAGE_PUBLISHER_MODULE,
+  cpu_config: { kickout_deadline: 200, terminate_deadline: 300 }
+  memory_config: { kickout_deadline: 4000, terminate_deadline: 6000 }
+}
+module_resource_configs: {
+  module_name: RADAR_PROCESS_MODULE,
+  cpu_config: { kickout_deadline: 200, terminate_deadline: 300 }
+  memory_config: { kickout_deadline: 4096, terminate_deadline: 6000 }
+}
+module_resource_configs: {
+  module_name: PERCEPTION_MODULE,
+  cpu_config: { kickout_deadline: 400, terminate_deadline: 600 }
+  memory_config: { kickout_deadline: 8000, terminate_deadline: 10000 }
+}
+module_resource_configs: {
+  module_name: VISION_MODULE,
+  cpu_config: { kickout_deadline: 200, terminate_deadline: 400 }
+  memory_config: { kickout_deadline: 7000, terminate_deadline: 9000 }
+}
+module_resource_configs: {
+  module_name: TRACKER_MODULE,
+  cpu_config: { kickout_deadline: 300, terminate_deadline: 400 }
+  memory_config: { kickout_deadline: 6000, terminate_deadline: 8000 }
+}
+module_resource_configs: {
+  module_name: PLANNER_MODULE,
+  cpu_config: { kickout_deadline: 550, terminate_deadline: 600 }
+  memory_config: { kickout_deadline: 6000, terminate_deadline: 8000 }
+}
+module_resource_configs: {
+  module_name: REMOTE_ASSIST_MODULE,
+  cpu_config: { kickout_deadline: 150, terminate_deadline: 200 }
+}
+module_resource_configs: {
+  module_name: ROUTING_MODULE,
+  cpu_config: { kickout_deadline: 300, terminate_deadline: 400 }
+  memory_config: { kickout_deadline: 7000, terminate_deadline: 8000 }
+}
+module_resource_configs: {
+  module_name: QVIEW_PUBLISHER_MODULE,
+  cpu_config: { kickout_deadline: 150, terminate_deadline: 200 }
+  memory_config: { kickout_deadline: 2048, terminate_deadline: 4096 }
+}

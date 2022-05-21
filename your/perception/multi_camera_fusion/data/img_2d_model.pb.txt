@@ -1,0 +1,4 @@
+state_process_noise_position_weight_std: 0.05
+state_process_noise_velocity_weight_std: 0.0625
+
+state_measurement_noise_std: 0.005

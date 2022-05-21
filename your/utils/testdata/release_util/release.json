@@ -1,0 +1,20 @@
+{
+  "cn": {
+    "map_repo": "git@161.189.182.26:/home/git/qcraft-map.git", 
+    "xavier_docker_image": "registry.qcraftai.com/global/xavier-release",
+    "main_docker_image": "registry.qcraftai.com/global/qcraft-release",
+    "map_sha": "5a633aa8e60d3f1c07014350d4308240366428ad", 
+    "map_folder": "qcraft-maps-china"
+  }, 
+  "xavier_tag": "xavier_v0", 
+  "timestamp": 1596145698, 
+  "us": {
+    "map_repo": "git@gitlab.qcraft.ai:root/qcraft-maps.git", 
+    "xavier_docker_image": "registry.qcraftai.com/global/xavier-release",
+    "main_docker_image": "registry.qcraftai.com/global/qcraft-release",
+    "map_sha": "db37db6d0f3a3d400ac49d6dbfdc85ed60fc9e8e", 
+    "map_folder": "qcraft-maps"
+  }, 
+  "sha": "9d7946e43fc7a7556d6f0e6af7ef002f6e676e4c", 
+  "tag": "release_v1"
+}

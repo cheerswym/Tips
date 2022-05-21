@@ -1,0 +1,13 @@
+syntax = "proto2";
+
+package qcraft.tcn_model;
+option go_package = "qcraft-proto.ai/onboard/perception/tracker/track_classifier/proto/tcn_model";
+
+enum TcnType {
+  TCN_VEHICLE = 0;
+  TCN_PEDESTRIAN = 1;
+  TCN_CYCLIST = 2;
+  TCN_VEGETATION = 3;
+  TCN_BARRIER = 4;
+  TCN_UNKNOWN = 5;
+}

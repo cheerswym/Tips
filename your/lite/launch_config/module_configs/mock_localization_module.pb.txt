@@ -1,0 +1,18 @@
+# Localization Module
+module_class_name: "MockLocalizationModule"
+module_name: MOCK_LOCALIZATION_MODULE
+outputs: { field_name: "localization_transform_proto" }
+# system msg
+inputs: { field_name: "system_command_proto" }
+# channel checker config
+checkers: {
+  field_name: "localization_transform_proto",
+  min_frequency: 5,
+  max_frequency: 5
+}
+
+# Maximum CPU usage of the module.
+max_cpu_usage: 130
+
+# Maximum memory usage of the module.
+max_memory_usage_kb: 5030000

@@ -1,0 +1,32 @@
+module_class_name: "RsimStateMonitorModule"
+module_name: RSIM_STATE_MONITOR_MODULE
+outputs: { field_name: "depth_maps_proto" }
+outputs: { field_name: "execution_issue_proto" }
+outputs: { field_name: "counter_proto" }
+outputs: { field_name: "measurements_proto" }
+outputs: { field_name: "objects_proto" }
+outputs: { field_name: "obstacles_proto" }
+outputs: { field_name: "points_in_image_proto" }
+outputs: { field_name: "pose_correction_proto" }
+outputs: { field_name: "cluster_filter_debug_proto" }
+outputs: { field_name: "segments_in_image_proto" }
+outputs: { field_name: "pose_proto" }
+outputs: { field_name: "traffic_light_regions_proto" }
+outputs: { field_name: "imu_raw_reading_proto" }
+outputs: { field_name: "chassis" }
+outputs: { field_name: "driver_action" }
+outputs: { field_name: "log_proto" }
+outputs: { field_name: "system_info_proto" }
+
+inputs: { field_name: "system_state_proto" }
+
+# system msg
+inputs: { field_name: "system_command_proto" }
+inputs: { field_name: "autonomy_state_proto" }
+outputs: { field_name: "system_state_proto" }
+
+cpu_config: { kickout_deadline: 300, terminate_deadline: 400 }
+
+module_restart_times: 0
+
+module_startup_exit_priority: 1

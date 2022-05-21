@@ -1,0 +1,16 @@
+module_class_name: "NodeStateModule"
+module_name: NODE_STATE_MODULE
+inputs: { field_name: "node_state_proto", allow_xnode_input: true }
+inputs: { field_name: "system_info_proto" }
+outputs: { field_name: "node_state_proto" }
+# system msg
+inputs: { field_name: "system_command_proto" }
+outputs: { field_name: "counter_proto" }
+outputs: { field_name: "execution_issue_proto" }
+outputs: { field_name: "log_proto" }
+outputs: { field_name: "q_events_proto" }
+outputs: { field_name: "system_info_proto" }
+outputs: { field_name: "system_state_proto" }
+outputs: { field_name: "trace_proto" }
+
+module_startup_exit_priority: 1

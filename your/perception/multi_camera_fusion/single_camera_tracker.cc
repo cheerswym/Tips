@@ -1,0 +1,355 @@
+#include "onboard/perception/multi_camera_fusion/single_camera_tracker.h"
+
+#include <algorithm>
+#include <limits>
+#include <map>
+#include <optional>
+#include <random>
+#include <set>
+#include <unordered_map>
+#include <unordered_set>
+#include <utility>
+
+#include "absl/strings/str_format.h"
+#include "absl/strings/str_split.h"
+#include "onboard/async/parallel_for.h"
+#include "onboard/global/trace.h"
+#include "onboard/lite/logging.h"
+#include "onboard/perception/tracker/motion_filter_2/meas_model.h"
+
+namespace qcraft::multi_camera_fusion {
+
+void SingleCameraTracker::TrackObjects(
+    double timestamp, const VehiclePose& pose,
+    std::shared_ptr<const MeasurementsProto> measurements_group) {
+  SCOPED_QTRACE("SingleCameraTracker::TrackObjects");
+  if (timestamp < latest_tracked_timestamp_) {
+    return;
+  }
+  pose_ = pose;
+  AssociateCameraMeasurementsAndUpdateTracks(timestamp, *measurements_group);
+  ClassifyAndAdjustTrackAfterUpdate();
+  RemoveExpiredTracks(timestamp);
+  // Save measurements group.
+  const double buffer_time = 0.3 + kMaxMeasurementHistoryBufferLength +
+                             kMaxAllowedNoMeasurementUpdateTime;
+  measurement_history_groups_.PushBackAndClearStale(
+      timestamp, measurements_group, buffer_time);
+  latest_tracked_timestamp_ = timestamp;
+}
+
+std::vector<const MeasurementProto*> SingleCameraTracker::GetValidMeasurements(
+    const MeasurementsProto& measurements_group) {
+  std::vector<const MeasurementProto*> camera_measurements;
+  for (const auto& m : measurements_group.measurements()) {
+    camera_measurements.push_back(&m);
+  }
+  return camera_measurements;
+}
+
+void SingleCameraTracker::AssociateCameraMeasurementsAndUpdateTracks(
+    const double timestamp, const MeasurementsProto& measurements_group) {
+  SCOPED_QTRACE(
+      "SingleCameraTracker::AssociateCameraMeasurementsAndUpdateTracks");
+  std::vector<const MeasurementProto*> camera_measurements =
+      GetValidMeasurements(measurements_group);
+  if (tracks_.empty()) {
+    CreateNewTracksFromMeasurements(camera_measurements);
+    return;
+  }
+  TrackerDebugProto group_debug_proto;
+  std::vector<int> camera_m_matches = camera_associator_.Association1v1(
+      timestamp, camera_measurements, tracks_, nullptr, nullptr,
+      group_debug_proto.mutable_association_debug_info());
+  std::vector<const MeasurementProto*> matched_measurements_per_track(
+      tracks_.size());
+  std::vector<const MeasurementProto*> unmatched_measurements_camera;
+  unmatched_measurements_camera.reserve(tracks_.size());
+  for (int i = 0; i < camera_m_matches.size(); ++i) {
+    const int track_ind = camera_m_matches[i];
+    if (track_ind >= 0) {
+      matched_measurements_per_track[track_ind] = camera_measurements[i];
+    } else {
+      unmatched_measurements_camera.push_back(camera_measurements[i]);
+    }
+  }
+
+  UpdateTracksFromMeasurements(timestamp, matched_measurements_per_track);
+
+  // Create new tracks for the unmatched camera measurements.
+  CreateNewTracksFromMeasurements(unmatched_measurements_camera);
+}
+void SingleCameraTracker::ResetLifeStateToLost() {
+  for (auto& track : tracks_) {
+    track->track_state.life_state = TrackLifeState::kLost;
+  }
+}
+void SingleCameraTracker::UpdateTracksFromMeasurements(
+    const double timestamp, const std::vector<const MeasurementProto*>&
+                                matched_measurements_per_track) {
+  SCOPED_QTRACE("SingleCameraTracker::UpdateTracksFromCamera3DMeasurements");
+  QCHECK_EQ(tracks_.size(), matched_measurements_per_track.size());
+  ParallelFor(0, tracks_.size(), thread_pool_, [&](int i) {
+    auto& track = *(tracks_[i]);
+    const auto* measurement = matched_measurements_per_track[i];
+    if (measurement &&
+        ShouldUpdateTrackBy2DMotionTrendAnalysis(track, *measurement)) {
+      UpdateTrackFromCamera3DMeasurement(*measurement, &track);
+    } else {
+      UpdateTrackWithoutMeasurement(timestamp, &track);
+    }
+  });
+}
+
+bool SingleCameraTracker::ShouldUpdateTrackBy2DMotionTrendAnalysis(
+    const tracker::Track<MultiCameraTrackState>& track,
+    const MeasurementProto& m) {
+  if (m.camera3d_measurement().has_mono3d_depth()) {
+    const auto& track_state = track.track_state.motion_filter_2d.GetState();
+    const auto& last_m =
+        track.measurement_history.back_value()->camera3d_measurement();
+    const double depth_diff =
+        m.camera3d_measurement().mono3d_depth() - last_m.mono3d_depth();
+    const double time_diff =
+        m.camera3d_measurement().timestamp() - last_m.timestamp();
+    // This to make sure the object is fully visible in the image.
+    // The object need to be fully seen for the use of 2D motion trend.
+    constexpr double kMaxHeightPixel = 325.0;  // pixel
+    // Only perform this for consecutive measurements.
+    constexpr double kMaxAllowedTimeDiff = 0.15;  // second
+    if (time_diff < kMaxAllowedTimeDiff && track_state.h() < kMaxHeightPixel) {
+      // This to make sure the object is indeed farther or closer
+      // but not just generated by noise.
+      constexpr double kMinHeightSpeed = 15.0;  // pixel/s
+      if (std::abs(track_state.vh()) > kMinHeightSpeed) {
+        // This is the area for the logic to function.
+        // Nothing should be done within 15m depth range.
+        constexpr double kMinDistanceToVehicle = 15.0;  // m
+        if (m.camera3d_measurement().mono3d_depth() > kMinDistanceToVehicle) {
+          // This is the max allowed measurement inconsistency percentage.
+          // We do allow 10% inconsistency or 2m whichever is smaller.
+          constexpr double kMaxAllowedInconsistentPercentage =
+              0.1;                                                 // percentage
+          constexpr double kMaxAllowedInconsistentDistance = 2.0;  // m
+          if (std::abs(depth_diff) >
+                  kMaxAllowedInconsistentPercentage *
+                      m.camera3d_measurement().mono3d_depth() &&
+              std::abs(depth_diff) > kMaxAllowedInconsistentDistance) {
+            // This ensures that 2D motion trend contradicts 3D trend.
+            if (depth_diff * track_state.vh() > 0) {
+              return false;
+            }
+          }
+        }
+      }
+    }
+  }
+  return true;
+}
+
+void SingleCameraTracker::CreateNewTracksFromMeasurements(
+    const std::vector<const MeasurementProto*>& measurements) {
+  SCOPED_QTRACE("SingleCameraTracker::CreateNewTracksFromMeasurements");
+  for (const auto* m : measurements) {
+    tracks_.emplace_back(
+        std::make_shared<tracker::Track<MultiCameraTrackState>>());
+    auto& track = *(tracks_.back());
+    track.track_state.id = GenerateNewTrackId();
+    track.track_state.first_timestamp = m->timestamp();
+    track.track_state.last_timestamp = m->timestamp();
+    track.track_state.state_timestamp = m->timestamp();
+    track.track_state.type = m->type();
+    track.track_state.camera_id = m->camera3d_measurement().camera_id();
+    const bool is_car_model = ShouldUseCarModel(track);
+    track.track_state.estimator_3d = Create3DEstimator(is_car_model);
+    const auto m_pos = m->camera3d_measurement().pos();
+    const double m_heading = m->camera3d_measurement().heading();
+    track.track_state.pos = {m_pos.x(), m_pos.y(), m_pos.z()};
+    track.track_state.heading = m_heading;
+    if (is_car_model) {
+      tracker::CarState state;
+      state.x() = m_pos.x();
+      state.y() = m_pos.y();
+      state.yaw() = m_heading;
+      track.track_state.estimator_3d.Init(tracker::StateData(state),
+                                          m->timestamp());
+
+    } else {  // point model
+      tracker::PointState state;
+      state.x() = m_pos.x();
+      state.y() = m_pos.y();
+      track.track_state.estimator_3d.Init(tracker::StateData(state),
+                                          m->timestamp());
+    }
+    // Extent filter.
+    tracker::BBoxState bbox_meas;
+    bbox_meas.length() = m->camera3d_measurement().length();
+    bbox_meas.width() = m->camera3d_measurement().width();
+    track.track_state.bounding_box = Box2d(
+        Vec2d(m_pos.x(), m_pos.y()), m_heading,
+        m->camera3d_measurement().length(), m->camera3d_measurement().width());
+    track.track_state.contour = Polygon2d(track.track_state.bounding_box);
+    track.track_state.estimator_3d.InitExtent(bbox_meas);
+    // Create 2d motion filter.
+    MotionFilterParamProto params;
+    QCHECK(file_util::TextFileToProto(
+        "onboard/perception/multi_camera_fusion/data/img_2d_model.pb.txt",
+        &params));
+    const auto img_bbox_2d = m->camera3d_measurement().bbox_2d();
+    const double size_ratio =
+        static_cast<double>(img_bbox_2d.width()) /
+        (img_bbox_2d.height() + std::numeric_limits<double>::epsilon());
+    tracker::Img2DState img_2d_state;
+    img_2d_state << img_bbox_2d.x(), img_bbox_2d.y(), size_ratio,
+        img_bbox_2d.height(), 0.0, 0.0, 0.0, 0.0;
+    tracker::Img2DKalmanFilter<tracker::Img2DModelCV> img_2d_kf(
+        params, img_2d_state, track.track_state.last_timestamp);
+    track.track_state.motion_filter_2d = img_2d_kf;
+
+    track.measurement_history.PushBackAndClearStale(
+        m->timestamp(), m, kMaxMeasurementHistoryBufferLength);
+    track.track_state.life_state = TrackLifeState::kConfirmed;
+  }
+}
+
+void SingleCameraTracker::UpdateTrackFromCamera3DMeasurement(
+    const MeasurementProto& measurement,
+    tracker::Track<MultiCameraTrackState>* track) {
+  SCOPED_QTRACE("SingleCameraTracker::UpdateTrackFromCamera3DMeasurement");
+  const double m_timestamp = measurement.timestamp();
+  track->measurement_history.PushBackAndClearStale(
+      m_timestamp, &measurement, kMaxMeasurementHistoryBufferLength);
+  track->track_state.last_timestamp = measurement.timestamp();
+  track->track_state.state_timestamp = measurement.timestamp();
+
+  // Update 3D measurement comes form mono3d.
+  const auto obj_pos = measurement.camera3d_measurement().pos();
+  const double heading = measurement.camera3d_measurement().heading();
+  // TODO(zheng): Add a type voter.
+  track->track_state.type = measurement.type();
+  track->track_state.estimator_3d.Predict(m_timestamp);
+  constexpr double kMinYawDiffThresholdToConsiderHeadingFlipping = 0.5 * M_PI;
+  if (track->track_state.estimator_3d.IsCarModel()) {
+    if (std::abs(NormalizeAngle(
+            heading -
+            track->track_state.estimator_3d.GetStateData().GetYaw())) >
+        kMinYawDiffThresholdToConsiderHeadingFlipping) {
+      const tracker::PositionMeasurement pos(obj_pos.x(), obj_pos.y());
+      track->track_state.estimator_3d.Update(pos);
+    } else {
+      const tracker::PosHeadingMeasurement pos_yaw(obj_pos.x(), obj_pos.y(),
+                                                   heading);
+      track->track_state.estimator_3d.Update(pos_yaw);
+    }
+  } else {
+    const tracker::PositionMeasurement pos(obj_pos.x(), obj_pos.y());
+    track->track_state.estimator_3d.Update(pos);
+  }
+  track->track_state.pos = {obj_pos.x(), obj_pos.y(), obj_pos.z()};
+  track->track_state.heading = heading;
+
+  // Update 2d estimator.
+  const auto img_bbox_2d = measurement.camera3d_measurement().bbox_2d();
+  const double size_ratio =
+      static_cast<double>(img_bbox_2d.width()) /
+      (img_bbox_2d.height() + std::numeric_limits<double>::epsilon());
+  tracker::Img2DMeasurement img2d_meas(img_bbox_2d.x(), img_bbox_2d.y(),
+                                       size_ratio, img_bbox_2d.height());
+  track->track_state.motion_filter_2d.Predict(m_timestamp);
+  track->track_state.motion_filter_2d.Update(img2d_meas);
+
+  tracker::BBoxMeasurement bbox_meas;
+  bbox_meas.length() = measurement.camera3d_measurement().length();
+  bbox_meas.width() = measurement.camera3d_measurement().width();
+  bbox_meas.height() = measurement.camera3d_measurement().height();
+  track->track_state.estimator_3d.UpdateExtent(bbox_meas);
+  track->track_state.life_state = TrackLifeState::kConfirmed;
+
+  track->track_state.bounding_box =
+      Box2d(Vec2d(obj_pos.x(), obj_pos.y()), heading,
+            measurement.camera3d_measurement().length(),
+            measurement.camera3d_measurement().width());
+  track->track_state.contour = Polygon2d(track->track_state.bounding_box);
+  // TODO(zheng): Add a life state manager.
+  SaveCheckPoints(track);
+}
+void SingleCameraTracker::UpdateTrackWithoutMeasurement(
+    const double timestamp, tracker::Track<MultiCameraTrackState>* track) {
+  // NOTE(zheng): So much shooters, so we close the prediction mode.
+  //  track->track_state.state_timestamp = timestamp;
+  //  // Update without measurement.
+  //  track->track_state.motion_filter_2d.Predict(timestamp);
+  //  track->track_state.estimator_3d.Predict(timestamp);
+  track->track_state.life_state = TrackLifeState::kLost;
+  // SaveCheckPoints(track);
+}
+tracker::Estimator SingleCameraTracker::Create3DEstimator(
+    const bool should_use_car_model) {
+  MotionFilterParamProto param;
+  const std::string param_path =
+      should_use_car_model
+          ? "onboard/perception/multi_camera_fusion/data/car_model.pb.txt"
+          : "onboard/perception/multi_camera_fusion/data/point_model.pb.txt";
+  QCHECK(file_util::TextFileToProto(param_path, &param));
+  // TODO(zheng): Test if cv motion model is more robust.
+  if (should_use_car_model) {
+    param.set_type(MotionFilterParamProto::CAR_CV);
+    std::vector<MotionFilterParamProto> v{param};
+    return tracker::Estimator(tracker::ToImmProto(v, {1.0}));
+  } else {
+    param.set_type(MotionFilterParamProto::POINT_CV);
+    std::vector<MotionFilterParamProto> v{param};
+    return tracker::Estimator(tracker::ToImmProto(v, {1.0}));
+  }
+}
+
+bool SingleCameraTracker::ShouldUseCarModel(
+    const tracker::Track<MultiCameraTrackState>& track) const {
+  return track.track_state.type == MT_VEHICLE ||
+         track.track_state.type == MT_CYCLIST ||
+         track.track_state.type == MT_MOTORCYCLIST;
+}
+
+void SingleCameraTracker::RemoveExpiredTracks(double timestamp) {
+  SCOPED_QTRACE("SingleCameraTracker::RemoveExpiredTracks");
+  // TODO(zheng): Add track life state manager.
+  std::unordered_set<uint32_t> track_ids_to_delete;
+  for (int i = 0; i < tracks_.size(); ++i) {
+    const auto& track = *(tracks_[i]);
+    if (timestamp - track.track_state.last_timestamp >
+        kMaxAllowedNoMeasurementUpdateTime) {
+      track_ids_to_delete.insert(track.track_state.id);
+    }
+  }
+  // Remove dead tracks.
+  tracks_.erase(std::remove_if(tracks_.begin(), tracks_.end(),
+                               [&](const auto& track) {
+                                 return ContainsKey(track_ids_to_delete,
+                                                    track->track_state.id);
+                               }),
+                tracks_.end());
+}
+
+void SingleCameraTracker::ClassifyAndAdjustTrackAfterUpdate() {
+  // TODO(zheng): Classify track and adjust motion filter.
+}
+
+void SingleCameraTracker::SaveCheckPoints(
+    tracker::Track<MultiCameraTrackState>* track) {
+  MultiCameraTrackState checkpoint = track->track_state;
+  track->checkpoints.PushBackAndClearStale(
+      checkpoint.last_timestamp, std::move(checkpoint),
+      tracker::kMaxCheckPointHistoryBufferLength);
+}
+
+std::vector<TrackRef> SingleCameraTracker::GetConfirmedTracks() {
+  std::vector<TrackRef> confirmed_tracks;
+  for (const auto& track : tracks_) {
+    if (track->track_state.life_state == TrackLifeState::kConfirmed) {
+      confirmed_tracks.push_back(track);
+    }
+  }
+  return confirmed_tracks;
+}
+
+}  // namespace qcraft::multi_camera_fusion

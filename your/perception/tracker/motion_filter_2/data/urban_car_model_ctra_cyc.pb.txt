@@ -1,0 +1,39 @@
+state_x_init_std: 1.0
+state_y_init_std: 1.0
+state_heading_init_std: 5.0
+state_vel_init_std: 5.0
+state_acc_init_std: 1.5
+state_yawd_init_std: 10.0
+state_length_init_std: 0.5
+state_width_init_std: 0.5
+state_height_init_std: 0.5
+
+state_x_process_noise_std: 2.0
+state_y_process_noise_std: 2.0
+state_heading_process_noise_std: 10.0
+state_vel_process_noise_std: 1.0
+state_acc_process_noise_std: 5.0
+state_yawd_process_noise_std: 10.0
+state_length_process_noise_std: 0.5
+state_width_process_noise_std: 0.5
+state_height_process_noise_std: 0.5
+
+state_x_measurement_noise_std: 0.2
+state_y_measurement_noise_std: 0.2
+state_heading_measurement_noise_std: 5.0
+state_vel_measurement_noise_std: 5.0
+state_vel_x_measurement_noise_std: 2.0
+state_vel_y_measurement_noise_std: 2.0
+state_acc_measurement_noise_std: 0.3
+state_yawd_measurement_noise_std: 0.2
+state_length_measurement_noise_std: 5.0
+state_width_measurement_noise_std: 5.0
+state_height_measurement_noise_std: 5.0
+state_x_y_measurement_correlation_coefficient: 0.0
+state_vel_x_vel_y_measurement_correlation_coefficient: 0.0
+
+use_adaptive_ukf: false
+state_aukf_forget_ratio: 0.9
+state_aukf_forget_accmulate: 0.5
+use_adaptive_measurement_noise: false
+use_adaptive_process_noise: true

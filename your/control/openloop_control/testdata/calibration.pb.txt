@@ -1,0 +1,26 @@
+testtype: THROTTLEBRAKE  # THROTTLEBRAKE 、 ACCELERATION 、 STEER
+# For THROTTLEBRAKE
+enbale_inverse_gear: false
+throttle_brake_cmd { aperture: 10.0 duration_time: 5.0 }
+throttle_brake_cmd { aperture: 20.0 duration_time: 5.0 }
+throttle_brake_cmd { aperture: -10.0 duration_time: 5.0 }
+
+# For ACCELERATION
+accel_acceleration_cmd: 1.0
+brake_acceleration_cmd: -1.0
+
+# For STEER
+max_steer_percentage_cmd:
+    10.0            # steer_cmd = max_steer_percentage_cmd*
+                    #             sin(2*pi*sample_period_steer_cmd*t)
+max_speed_cmd: 3.5  # keep vehicle speed = 5.0m/s
+sample_period_steer_cmd: 5.0
+pid_config {
+  speed_kp: 8.0
+  speed_ki: 10.0
+  speed_kd: 0.0
+  speed_integral_limit: 100.0
+  aperture_min: -70.0
+  aperture_max: 70.0
+  aperture_rate_limit: 10.0
+}

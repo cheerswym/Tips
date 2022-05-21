@@ -1,0 +1,11 @@
+# Launch run with real time simulation with similar onboard configurations,
+# driver modules are excluded.
+lite_module_config_filenames: "vantage_forwarding_module.pb.txt"
+# lite_module_config_filenames : "perception_module.pb.txt"
+# lite_module_config_filenames : "vision_module.pb.txt"
+# lite_module_config_filenames : "tracker_module.pb.txt"
+lite_module_config_filenames: "realtime_playback.pb.txt"
+lite_module_config_filenames: "planner_module.pb.txt"
+# lite_module_config_filenames : "vehicle_control_module.pb.txt"
+# lite_module_config_filenames : "can_bus_module.pb.txt"
+# lite_module_config_filenames : "autonomy_state_module.pb.txt"

@@ -1,0 +1,29 @@
+# DO NOT USE IN PROCUTION, FOR MODULE TEST ONLY.
+module_class_name: "MockLoggingModule"
+module_name: MOCK_LOGGING_MODULE
+inputs: { field_name: "execution_issue_proto" }
+inputs: { field_name: "gnss_imu_driver_debug_proto" }
+inputs: { field_name: "gnss_raw_reading_proto" }
+inputs: { field_name: "imu_raw_reading_proto", channel: "imu_1" }
+inputs: { field_name: "imu_raw_reading_proto", channel: "imu_2" }
+inputs: { field_name: "lidar_host_time_diff_proto" }
+inputs: { field_name: "pandar_packet_proto" }
+inputs: { field_name: "pose_proto" }
+inputs: { field_name: "shm_message_metadata", channel: "decoded_image" }
+inputs: { field_name: "shm_message_metadata", channel: "encoded_image" }
+inputs: { field_name: "shm_message_metadata", channel: "lidar_spin" }
+inputs: { field_name: "system_command_proto" }
+inputs: { field_name: "crash_log_proto" }
+# system msg
+outputs: { field_name: "counter_proto" }
+outputs: { field_name: "execution_issue_proto" }
+outputs: { field_name: "log_proto" }
+outputs: { field_name: "q_events_proto" }
+outputs: { field_name: "system_info_proto" }
+outputs: { field_name: "system_state_proto" }
+outputs: { field_name: "trace_proto" }
+
+# shutdown.
+module_restart_times: 0
+
+module_startup_exit_priority: 10

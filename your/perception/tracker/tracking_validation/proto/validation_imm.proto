@@ -1,0 +1,30 @@
+syntax = "proto2";
+
+package qcraft;
+option go_package = "qcraft-proto.ai/onboard/perception/tracker/tracking_validation/proto/validation_imm";
+
+import "onboard/proto/perception.proto";
+
+message EstimationProto {
+  optional ObjectProto est_state = 1;
+  message ProMotionModel {
+    repeated double mu = 1;
+  }
+  optional ProMotionModel est_mu = 2;
+  optional int32 motion_num = 3;
+}
+
+message EstimationsProto {
+  enum TrackFilterType {
+    TFT_UKF = 0;
+    TFT_IMM = 1;
+  }
+  optional TrackFilterType filter = 1;
+  repeated EstimationProto estimations = 2;
+}
+
+message TrackingValidationProto {
+  repeated MeasurementsProto measurements = 1;
+  repeated ObjectsProto ground_truths = 2;
+  repeated EstimationsProto estimators = 3;
+}

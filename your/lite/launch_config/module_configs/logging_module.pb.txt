@@ -1,0 +1,33 @@
+# logging Module
+module_class_name: "LoggingModule"
+module_name: LOGGING_MODULE
+inputs: { field_name: "localization_transform_proto", allow_xnode_input: true }
+inputs: { field_name: "localization_debug_proto", allow_xnode_input: true }
+inputs: { field_name: "pandar_packet_proto" }
+inputs: { field_name: "counter_proto", allow_xnode_input: true }
+inputs: { field_name: "q_events_proto", allow_xnode_input: true }
+inputs: { field_name: "log_proto", allow_xnode_input: true }
+inputs: { field_name: "system_info_proto", allow_xnode_input: true }
+inputs: { field_name: "trace_proto", allow_xnode_input: true }
+inputs: { field_name: "crash_log_proto", allow_xnode_input: true }
+inputs: { field_name: "shm_message_metadata", channel: "encoded_lidar_frame" }
+inputs: { field_name: "lite_run_info_proto", allow_xnode_input: true }
+
+# system msg
+inputs: { field_name: "system_command_proto" }
+outputs: { field_name: "counter_proto" }
+outputs: { field_name: "execution_issue_proto" }
+outputs: { field_name: "log_proto" }
+outputs: { field_name: "q_events_proto" }
+outputs: { field_name: "system_info_proto" }
+outputs: { field_name: "system_state_proto" }
+outputs: { field_name: "trace_proto" }
+
+module_startup_exit_priority: 0
+
+# heartbeat config of the module.
+heartbeat_config: { kickout_deadline: 2000000, terminate_deadline: 10000000 }
+
+# module restart times, 0:not restart,when the module crash,system will
+# shutdown.
+module_restart_times: 0

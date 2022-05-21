@@ -1,0 +1,15 @@
+# Control Calibration Module
+module_class_name: "ControlCalibrationModule"
+module_name: CONTROL_CALIBRATION_MODULE
+inputs: { field_name: "chassis" }
+inputs: { field_name: "pose_proto" }
+inputs: { field_name: "pose_proto", channel: "sensor_pose" }
+outputs: { field_name: "charts_data_proto" }
+# system msg
+inputs: { field_name: "system_command_proto" }
+outputs: { field_name: "execution_issue_proto" }
+outputs: { field_name: "log_proto" }
+outputs: { field_name: "q_events_proto" }
+outputs: { field_name: "system_info_proto" }
+outputs: { field_name: "system_state_proto" }
+outputs: { field_name: "trace_proto" }

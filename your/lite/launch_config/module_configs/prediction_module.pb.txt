@@ -1,0 +1,19 @@
+# Prediction Module
+module_class_name: "PredictionModule"
+module_name: PREDICTION_MODULE
+inputs: { field_name: "objects_proto", max_interval: 0.3 }
+outputs: { field_name: "charts_data_proto" }
+outputs: { field_name: "execution_issue_proto" }
+outputs: { field_name: "objects_prediction_proto" }
+outputs: { field_name: "prediction_debug_proto" }
+# system msg
+inputs: { field_name: "system_command_proto" }
+outputs: { field_name: "counter_proto" }
+outputs: { field_name: "execution_issue_proto" }
+outputs: { field_name: "log_proto" }
+outputs: { field_name: "q_events_proto" }
+outputs: { field_name: "system_info_proto" }
+outputs: { field_name: "system_state_proto" }
+outputs: { field_name: "trace_proto" }
+
+module_startup_exit_priority: 6

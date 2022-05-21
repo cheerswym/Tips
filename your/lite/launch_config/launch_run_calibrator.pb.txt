@@ -1,0 +1,4 @@
+lite_module_config_filenames: "autonomy_module.pb.txt"
+# t0 image
+lite_module_config_filenames: "image_forwarding_module.pb.txt"
+lite_module_config_filenames: "image_sender_module.pb.txt"

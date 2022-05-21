@@ -1,0 +1,4 @@
+# CAN bus module
+module_class_name: "IssueCalculate"
+module_name: TEST_LITE_MODULE_1
+inputs: { field_name: "execution_issue_proto" }

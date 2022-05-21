@@ -1,0 +1,52 @@
+name: "perception.debug.pb.txt"
+commandline_flags: "--map=suzhou"
+commandline_flags: "--enable_ll_net=1"
+commandline_flags: "--enable_visual_net=0"
+commandline_flags: "--dump_obstacle_semantic_grid_image=0"
+commandline_flags: "--sim_mode=dsim"
+commandline_flags: "--enable_radar_measurement=true"
+execution {
+  playback_sources {
+    run_or_stf_path: "20210825_134951_Q8027"
+    duration: 30
+    start_offset: 100
+  }
+  sim_modules {
+    perception_module { module: PERCEPTION_MODULE enable: true }
+    vision_module { module: VISION_MODULE playback_source_id: 0 }
+    tracker_module { module: TRACKER_MODULE enable: true }
+    radar_publisher_module { module: RADAR_PUBLISHER_MODULE enable: true }
+    spin_publisher_module {
+      module: SPIN_PUBLISHER_MODULE
+      playback_source_id: 0
+    }
+    localization_module { module: LOCALIZATION_MODULE enable: true }
+    positioning_module { module: POSITIONING_MODULE playback_source_id: 0 }
+    vehicle_control_module {
+      module: VEHICLE_CONTROL_MODULE
+      playback_source_id: 0
+    }
+    planner_module { module: PLANNER_MODULE playback_source_id: 0 }
+    gnss_imu_driver_module {
+      module: GNSS_IMU_DRIVER_MODULE
+      playback_source_id: 0
+    }
+    image_publisher_module {
+      module: IMAGE_PUBLISHER_MODULE
+      playback_source_id: 0
+    }
+    vantage_forwarding_module { module: VANTAGE_FORWARDING_MODULE enable: true }
+    simulation_vehicle_module {
+      module: SIMULATION_VEHICLE_MODULE
+      enable: true
+      module_conf {
+        [qcraft.SimVehicleConf.sim_vehicle_conf] { engage_start_time: 10000000 }
+      }
+    }
+    can_bus_module { module: CAN_BUS_MODULE playback_source_id: 0 }
+    autonomy_state_module { module: AUTONOMY_STATE_MODULE enable: true }
+  }
+}
+commandline_flags: "--localizer_pf_optimal_method=max"
+commandline_flags: "--enable_second_version_smooth_coordinate=true"
+commandline_flags: "--enable_smooth_coordinate_localization=true"
