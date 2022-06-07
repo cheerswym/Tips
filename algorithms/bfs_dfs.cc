@@ -53,7 +53,7 @@ void Graph::DFS() {
     }
   }
 
-  for (int j = 0; j < nVerts; j++)  //重新置为未访问
+  for (int j = 0; j < nVerts; j++)  //重新置为未访问.
     vertexList[j]->wasVisited = false;
 }
 
