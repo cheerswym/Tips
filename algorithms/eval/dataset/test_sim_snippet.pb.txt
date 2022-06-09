@@ -1,0 +1,8 @@
+snippets {
+  offset_interval {
+    start_offset: 1995 
+    duration: 20
+  }
+  run_name: "20220518_103629_Q2401"
+  name: "test_run_map"
+}
